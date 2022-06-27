@@ -1,10 +1,13 @@
 后台管理接口
 
-拉取下来复制db 文件夹下 mysql 文件到数据库运行就行 别忘记了库名叫renren_fast
-修改application.yaml 里面的redis 地址
-修改application-dev.yaml 里面的mysql 地址
+拉取下来复制db 文件夹下 mysql 文件到数据库运行就行 
+别忘记了库名叫renren_fast
 
+修改application.yaml 里面的环境 test 改为dev
+修改application.yaml 里面的redis 地址 
+修改application-dev.yaml 里面的mysql 地址 
 
+上传到自己的分支时候请切换到Test 环境 不然上传测试不通过
 
 CI/CD  暂定用GitHub Actions
 
