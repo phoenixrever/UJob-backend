@@ -55,6 +55,22 @@ jobs:
       with:
         name: Package
         path: staging
+    - name: 发送邮件
+        if: always()
+        uses: dawidd6/action-send-mail@v3.6.1
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          # email subject
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          # email body as text
+          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          # comma-separated string, send email to
+          to: phoenixhell@163.com
+          # from email name
+          from: チヨウ　カツヒ
 
 #      部署到测试服务器 有服务器了再测试
 #      - name: Deploy to server
