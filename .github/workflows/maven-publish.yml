@@ -70,7 +70,7 @@ jobs:
           # comma-separated string, send email to
           to: phoenixhell@163.com
           # from email name
-          from: チヨウ　カツヒ
+          from: xFuture
 
 #      部署到测试服务器 有服务器了再测试
 #      - name: Deploy to server
