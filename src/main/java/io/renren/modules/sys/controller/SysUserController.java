@@ -10,6 +10,7 @@ package io.renren.modules.sys.controller;
 
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.Constant;
+import io.renren.common.utils.MessageUtil;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.Assert;
@@ -20,12 +21,15 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.form.PasswordForm;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +111,7 @@ public class SysUserController extends AbstractController {
 	 * 保存用户
 	 */
 	@SysLog("保存用户")
+	@ApiOperation("列表")
 	@PostMapping("/save")
 	@RequiresPermissions("sys:user:save")
 	public R save(@RequestBody SysUserEntity user){

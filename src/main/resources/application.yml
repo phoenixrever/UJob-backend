@@ -41,6 +41,11 @@ spring:
 #  resources:
 #    add-mappings: false
 
+  #国际化配置
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+
 
 #mybatis
 mybatis-plus:
