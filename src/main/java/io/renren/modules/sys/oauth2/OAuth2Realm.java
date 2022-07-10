@@ -44,7 +44,7 @@ public class OAuth2Realm extends AuthorizingRealm {
         SysUserEntity user = (SysUserEntity)principals.getPrimaryPrincipal();
         Long userId = user.getUserId();
 
-        //用户权限列表
+        //用户权限列表  todo 好像并没有设置role 有空查下前端有没有设置role
         Set<String> permsSet = shiroService.getUserPermissions(userId);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();

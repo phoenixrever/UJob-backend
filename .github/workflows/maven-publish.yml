@@ -4,11 +4,12 @@
 name: Maven Package
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
+  # 不管上传哪个分支都会促发工作流
   push:
     branches:
       - "*"
 
+#选择maven项目自动生成的
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,11 +17,13 @@ jobs:
       contents: read
       packages: write
 
+    #变量
     env:
       DB_DATABASE: renren_fast
       DB_USER: root
       DB_PASSWORD: root
 
+    #redis docker容器  如果项目中用不到redis的话就不用这个
     services:
       # Label used to access the service container
       redis:
@@ -32,6 +35,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+    #从github上拉取代码 并且启动mysql
     steps:
     - uses: actions/checkout@v3
     - name: Set up MySQL
@@ -42,11 +47,13 @@ jobs:
         mysql -uroot -proot renren_fast < ./db/mysql.sql
         mysql -e 'use renren_fast;show tables;' -uroot -proot
 
+    #在虚拟机上（ubuntu-latest）安装java环境
     - uses: actions/setup-java@v3
       with:
         java-version: '8'
         distribution: 'adopt'
         cache: maven
+
     #maven打包 测试
     - name: maven打包 测试
       run: mvn --batch-mode --update-snapshots verify
@@ -55,6 +62,8 @@ jobs:
       with:
         name: Package
         path: staging
+
+    #发送邮件功能
     - name: 发送邮件
         if: always()
         uses: dawidd6/action-send-mail@v3.6.1

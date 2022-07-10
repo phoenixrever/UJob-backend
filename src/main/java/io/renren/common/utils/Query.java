@@ -28,19 +28,20 @@ public class Query<T> {
     }
 
     public IPage<T> getPage(Map<String, Object> params, String defaultOrderField, boolean isAsc) {
+        //注意 这边 curPage  被我改成了currPage 因为pageUtils 里面是currPage 保持一致比较好
         //分页参数
-        long curPage = 1;
+        long currPage = 1;
         long limit = 10;
 
         if(params.get(Constant.PAGE) != null){
-            curPage = Long.parseLong((String)params.get(Constant.PAGE));
+            currPage = Long.parseLong((String)params.get(Constant.PAGE));
         }
         if(params.get(Constant.LIMIT) != null){
             limit = Long.parseLong((String)params.get(Constant.LIMIT));
         }
 
         //分页对象
-        Page<T> page = new Page<>(curPage, limit);
+        Page<T> page = new Page<>(currPage, limit);
 
         //分页参数
         params.put(Constant.PAGE, page);

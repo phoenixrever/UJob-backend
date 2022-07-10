@@ -66,6 +66,8 @@ mybatis-plus:
     cache-enabled: false
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
+    log-impl: io.renren.common.utils.MySlf4jImpl
+
 
 swagger:
   enable: true
@@ -82,3 +84,5 @@ renren:
     # token有效时长，7天，单位秒
     expire: 604800
     header: token
+
+

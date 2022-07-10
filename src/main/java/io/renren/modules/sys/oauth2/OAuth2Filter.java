@@ -68,6 +68,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             return false;
         }
 
+        //shiro自带的subject.login 过程
         return executeLogin(request, response);
     }
 

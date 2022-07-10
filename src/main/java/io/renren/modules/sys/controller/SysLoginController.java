@@ -52,7 +52,6 @@ public class SysLoginController extends AbstractController {
 	public void captcha(HttpServletResponse response, String uuid)throws IOException {
 		response.setHeader("Cache-Control", "no-store, no-cache");
 		response.setContentType("image/jpeg");
-		System.out.println(uuid);
 		//获取图片验证码 getCaptcha方法 会在captcha表新建一个5分钟过期的一条验证码数据
 		BufferedImage image = sysCaptchaService.getCaptcha(uuid);
 

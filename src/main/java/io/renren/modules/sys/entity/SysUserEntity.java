@@ -46,7 +46,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 密码
 	 */
-	@NotBlank(message="密码不能为空", groups = AddGroup.class)
+	@NotBlank(message="{user.password}", groups = AddGroup.class)
 	private String password;
 
 	/**
@@ -57,8 +57,8 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 邮箱
 	 */
-	@NotBlank(message="邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
-	@Email(message="{user.email}", groups = {AddGroup.class, UpdateGroup.class})
+	@NotBlank(message="{user.email}", groups = {AddGroup.class, UpdateGroup.class})
+	@Email(message="{user.email.format}", groups = {AddGroup.class, UpdateGroup.class})
 	private String email;
 
 	/**
