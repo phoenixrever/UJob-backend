@@ -83,7 +83,7 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     }
 
     //公共方法 所有select id 换成对应name
-    //todo 线性查这么多表太慢了 改成异步多线程查询
+    //todo 线性查这么多表太慢了 改成异步多线程查询 并且利用spring cache 存到redis里面
     public JobDetailVo changeIdToName(JobEntity jobEntity) {
 
         List<LanguageEntity> languageEntities = languageService.list();
