@@ -76,7 +76,7 @@ jobs:
         # email body as text
         body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
         # 要发送的邮件 多个逗号分离
-        to: phoenixhell@163.com
+        to: contact@xfuture.cc
         # from email name
         from: xFuture
 
