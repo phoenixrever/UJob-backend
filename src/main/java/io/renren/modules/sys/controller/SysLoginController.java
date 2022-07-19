@@ -85,6 +85,8 @@ public class SysLoginController extends AbstractController {
 		}
 
 		//生成token，并保存到数据库
+		// 此时前端已经从后端拿到生成的token了 用次token 加到请求头中 跳转到主页 完成登录
+		// 每次访问带着此token到后端校验
 		R r = sysUserTokenService.createToken(user.getUserId());
 		return r;
 	}

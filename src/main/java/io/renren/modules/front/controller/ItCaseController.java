@@ -3,7 +3,7 @@ package io.renren.modules.front.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import io.renren.modules.front.vo.JobDetailVo;
+import io.renren.modules.front.vo.ItCaseDetailVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.front.entity.JobEntity;
-import io.renren.modules.front.service.JobService;
+import io.renren.modules.front.entity.ItCaseEntity;
+import io.renren.modules.front.service.ItCaseService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -27,10 +27,10 @@ import io.renren.common.utils.R;
  * @date 2022-07-08 19:48:10
  */
 @RestController
-@RequestMapping("front/job")
-public class JobController {
+@RequestMapping("front/itCase")
+public class ItCaseController {
     @Autowired
-    private JobService jobService;
+    private ItCaseService jobService;
 
     /**
      * 列表
@@ -61,7 +61,7 @@ public class JobController {
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("front:job:info")
     public R info(@PathVariable("id") Integer id){
-        JobDetailVo jobDetailVo = jobService.getDetailById(id);
+        ItCaseDetailVo jobDetailVo = jobService.getDetailById(id);
 
         return R.ok().put("jobDetail", jobDetailVo);
     }
@@ -71,7 +71,7 @@ public class JobController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("front:job:save")
-    public R save(@RequestBody JobEntity job){
+    public R save(@RequestBody ItCaseEntity job){
         System.out.println(job);
         jobService.save(job);
 
@@ -83,7 +83,7 @@ public class JobController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("front:job:update")
-    public R update(@RequestBody JobEntity job){
+    public R update(@RequestBody ItCaseEntity job){
 		jobService.updateById(job);
 
         return R.ok();

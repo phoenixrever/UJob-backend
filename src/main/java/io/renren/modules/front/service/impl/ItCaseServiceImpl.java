@@ -3,7 +3,7 @@ package io.renren.modules.front.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.renren.modules.front.entity.*;
 import io.renren.modules.front.service.*;
-import io.renren.modules.front.vo.JobDetailVo;
+import io.renren.modules.front.vo.ItCaseDetailVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 
-import io.renren.modules.front.dao.JobDao;
+import io.renren.modules.front.dao.ItCaseDao;
 
 
-@Service("jobService")
-public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements JobService {
+@Service("itCaseService")
+public class ItCaseServiceImpl extends ServiceImpl<ItCaseDao, ItCaseEntity> implements ItCaseService {
     @Autowired
     private LanguageService languageService;
     @Autowired
@@ -36,14 +36,13 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     private DbService dbService;
     @Autowired
     private AreaService areaService;
-    @Autowired
-    private MenuService menuService;
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<JobEntity> page = this.page(
-                new Query<JobEntity>().getPage(params),
-                new QueryWrapper<JobEntity>()
+        IPage<ItCaseEntity> page = this.page(
+                new Query<ItCaseEntity>().getPage(params),
+                new QueryWrapper<ItCaseEntity>()
         );
 
         return new PageUtils(page);
@@ -53,21 +52,53 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     @Override
     public PageUtils queryDetailPage(Map<String, Object> params) {
 
-        //处理分页参数和其他参数
-        IPage<JobEntity> page = this.page(
-                new Query<JobEntity>().getPage(params),
-                new QueryWrapper<JobEntity>().orderByDesc("created_time")
-        );
-        List<JobEntity> records = page.getRecords();
-        List<JobDetailVo> jobDetailVos = new ArrayList<>();
+        System.out.println(params);
+        QueryWrapper<ItCaseEntity> wrapper = new QueryWrapper<>();
 
-        for (JobEntity record : records) {
-            JobDetailVo jobDetailVo = changeIdToName(record);
+        int experienceId = 1;
+        int area = 1;
+        int japanese = 1;
+
+        if(params.get("experience")!=null){
+            experienceId = Integer.parseInt((String) params.get("experience"));
+            //1 是不限 所有都查询 注意里面不包含本身选项就是 无限 的 1
+            if(experienceId!=1){
+                wrapper.eq("experience",experienceId);
+            }
+
+        }
+        if(params.get("area")!=null){
+            area = Integer.parseInt((String) params.get("area"));
+            //System.out.println(area);
+            //System.out.println(area == 1);
+            //1 是不限 所有都查询
+            if(area!=1){
+                wrapper.eq("area",area);
+            }
+        }
+        if(params.get("japanese")!=null){
+            japanese = Integer.parseInt((String) params.get("japanese"));
+            if(japanese!=1){
+                wrapper.eq("japanese",japanese);
+            }
+        }
+
+
+        //处理分页参数和其他参数
+        IPage<ItCaseEntity> page = this.page(
+                new Query<ItCaseEntity>().getPage(params),
+                wrapper.orderByDesc("created_time")
+        );
+        List<ItCaseEntity> records = page.getRecords();
+        List<ItCaseDetailVo> jobDetailVos = new ArrayList<>();
+
+        for (ItCaseEntity record : records) {
+            ItCaseDetailVo jobDetailVo = changeIdToName(record);
             jobDetailVos.add(jobDetailVo);
         }
 
         //UserPage<T> extends Page<T>  自定义setRecords 方法
-        Page<JobDetailVo> jobDetailVoPage = new Page<>();
+        Page<ItCaseDetailVo> jobDetailVoPage = new Page<>();
         //老的分页属性全部复制过来 (records T 泛型不同不能复制 )
         BeanUtils.copyProperties(page, jobDetailVoPage);
 
@@ -76,15 +107,15 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     }
 
     @Override
-    public JobDetailVo getDetailById(Integer id) {
-        JobEntity jobEntity = this.getById(id);
-        JobDetailVo jobDetailVo = changeIdToName(jobEntity);
+    public ItCaseDetailVo getDetailById(Integer id) {
+        ItCaseEntity jobEntity = this.getById(id);
+        ItCaseDetailVo jobDetailVo = changeIdToName(jobEntity);
         return jobDetailVo;
     }
 
     //公共方法 所有select id 换成对应name
     //todo 线性查这么多表太慢了 改成异步多线程查询 并且利用spring cache 存到redis里面
-    public JobDetailVo changeIdToName(JobEntity jobEntity) {
+    public ItCaseDetailVo changeIdToName(ItCaseEntity jobEntity) {
 
         List<LanguageEntity> languageEntities = languageService.list();
         List<OsEntity> osEntities = osService.list();
@@ -92,9 +123,9 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
         List<ExperienceEntity> experienceEntities = experienceService.list();
         List<DbEntity> dbEntities = dbService.list();
         List<AreaEntity> areaEntities = areaService.list();
-        List<MenuEntity> menuEntities = menuService.list();
 
-        JobDetailVo jobDetailVo = new JobDetailVo();
+
+        ItCaseDetailVo jobDetailVo = new ItCaseDetailVo();
         BeanUtils.copyProperties(jobEntity, jobDetailVo);
         ArrayList<String> temp = new ArrayList<>();
 
@@ -136,12 +167,6 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
             }
         });
 
-        Integer menu = jobEntity.getMenu();
-        menuEntities.forEach(menuEntity -> {
-            if (menu.equals(menuEntity.getId())) {
-                jobDetailVo.setMenu(menuEntity.getName());
-            }
-        });
 
         Integer japanese = jobEntity.getJapanese();
         japaneseEntities.forEach(japaneseEntity -> {

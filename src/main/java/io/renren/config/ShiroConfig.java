@@ -1,16 +1,25 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
 package io.renren.config;
 
+import io.renren.common.utils.Constant;
+import io.renren.modules.front.shiro.BusinessUserRealm;
+import io.renren.modules.front.shiro.GeneralUserRealm;
+import io.renren.modules.front.shiro.MyModularRealmAuthenticator;
+import io.renren.modules.front.shiro.MyModularRealmAuthorizer;
 import io.renren.modules.sys.oauth2.OAuth2Filter;
 import io.renren.modules.sys.oauth2.OAuth2Realm;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
+import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -19,9 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Shiro配置
@@ -31,10 +38,44 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    //给realm 取名字 方便和userType比较
+    @Bean(Constant.GENERAL_USER)
+    public GeneralUserRealm generalUserRealm() {
+        return new GeneralUserRealm();
+    }
+
+    @Bean(Constant.BUSINESS_USER)
+    public BusinessUserRealm businessUserRealm() {
+        return new BusinessUserRealm();
+    }
+
+    //原来在component  注册  写在这里一起好管理
+    @Bean(Constant.SYS_USER)
+    public OAuth2Realm oauth2Realm() {return new OAuth2Realm();}
+
+    //注册 自定义的多realms 管理
+    @Bean
+    public ModularRealmAuthenticator modularRealmAuthenticator() {
+        MyModularRealmAuthenticator myModularRealmAuthenticator = new MyModularRealmAuthenticator();
+        myModularRealmAuthenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+        return myModularRealmAuthenticator;
+    }
+
     @Bean("securityManager")
     public SecurityManager securityManager(OAuth2Realm oAuth2Realm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(oAuth2Realm);
+        //securityManager.setRealm(oAuth2Realm);
+        //添加多个认证realm
+        ArrayList<Realm> realms = new ArrayList<>();
+        realms.add(oauth2Realm());
+        realms.add(generalUserRealm());
+        realms.add(businessUserRealm());
+        // 需要再realm定义前
+        securityManager.setAuthenticator(modularRealmAuthenticator());
+        //增加授权控制
+        securityManager.setAuthorizer(new MyModularRealmAuthorizer());
+
+        securityManager.setRealms(realms);
         securityManager.setRememberMeManager(null);
         return securityManager;
     }

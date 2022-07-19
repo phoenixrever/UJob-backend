@@ -46,6 +46,19 @@ public class Constant {
      */
     public static final String ASC = "asc";
 
+
+    //io.renren.modules.sys.oauth2.OAuth2Realm_0
+    //io.renren.modules.front.shiro.GeneralUserRealm_1
+    //io.renren.modules.front.shiro.BusinessUserRealm_2
+    //名字和realm的名字一致
+    public static final String GENERAL_USER = "GeneralUserRealm";
+    public static final String BUSINESS_USER = "BusinessUserRealm";
+    public static final String SYS_USER = "OAuth2Realm";
+
+
+    //redis key前缀 ： 文件夹分类 方便查看
+    public static final String GENERAL_USER_TOKEN_PREFIX="token:general:";
+    public static final String BUSINESS_USER_TOKEN_PREFIX="token:business:";
     /**
      * 菜单类型
      *

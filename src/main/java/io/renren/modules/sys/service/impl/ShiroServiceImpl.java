@@ -9,6 +9,8 @@
 package io.renren.modules.sys.service.impl;
 
 import io.renren.common.utils.Constant;
+import io.renren.modules.front.entity.GeneralUserEntity;
+import io.renren.modules.front.service.GeneralUserService;
 import io.renren.modules.sys.dao.SysMenuDao;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.dao.SysUserTokenDao;
@@ -31,6 +33,11 @@ public class ShiroServiceImpl implements ShiroService {
     @Autowired
     private SysUserTokenDao sysUserTokenDao;
 
+    @Autowired
+    private GeneralUserService generalUserService;
+
+
+    //获取sys 系统用户权限列表
     @Override
     public Set<String> getUserPermissions(long userId) {
         List<String> permsList;
@@ -56,6 +63,24 @@ public class ShiroServiceImpl implements ShiroService {
         return permsSet;
     }
 
+    //获取前端一般用户权限列表
+    @Override
+    public Set<String> getGeneralUserPermissions(long userId) {
+        GeneralUserEntity generalUser = generalUserService.getById(userId);
+        Set<String> permsSet = new HashSet<>();
+        permsSet.add(generalUser.getPermissionsIds());
+        //todo 创建用户对应的权限表，用户id为主键，权限为值，比如：1:front:user:add,front:user:update,front:user:delete
+        //不过前端比较简单好像不需要啥权限 暂时简单返回ids
+        return permsSet;
+    }
+
+    //获取前端企业用户权限列表
+    @Override
+    public Set<String> getBusinessUserPermissions(long userId) {
+        return null;
+    }
+
+
     @Override
     public SysUserTokenEntity queryByToken(String token) {
         return sysUserTokenDao.queryByToken(token);
@@ -64,5 +89,12 @@ public class ShiroServiceImpl implements ShiroService {
     @Override
     public SysUserEntity queryUser(Long userId) {
         return sysUserDao.selectById(userId);
+    }
+
+    @Override
+    public GeneralUserEntity getGeneralUser(String username) {
+        GeneralUserEntity  generalUser = generalUserService.query().eq("username", username).one();
+
+        return generalUser;
     }
 }

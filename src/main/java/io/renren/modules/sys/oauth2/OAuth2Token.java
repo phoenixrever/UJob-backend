@@ -14,13 +14,16 @@ import org.apache.shiro.authc.AuthenticationToken;
 /**
  * token
  *
- * @author Mark sunlightcs@gmail.com
+ * userType 辨别token 类型 一般用户 系统用户 企业用户
  */
 public class OAuth2Token implements AuthenticationToken {
     private String token;
 
-    public OAuth2Token(String token){
+    private String userType;
+
+    public OAuth2Token(String token, String userType) {
         this.token = token;
+        this.userType = userType;
     }
 
     @Override
@@ -32,4 +35,9 @@ public class OAuth2Token implements AuthenticationToken {
     public Object getCredentials() {
         return token;
     }
+
+    public String getUserType() {
+        return userType;
+    }
+
 }

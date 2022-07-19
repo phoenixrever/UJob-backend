@@ -17,6 +17,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * jwt工具类
@@ -26,30 +28,46 @@ import java.util.Date;
 @ConfigurationProperties(prefix = "renren.jwt")
 @Component
 public class JwtUtils {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    private String secret;
-    private long expire;
-    private String header;
+    private static String secret;
+    private static long expire;
+    private static  String header;
 
     /**
      * 生成jwt token
+     *
+     * realm 根据subject的类型来判断，
+     * userType  如果是一般用户，则为generalUser，如果是管企业用户，则为businessUser
+     *
+     * renren fast 并没有使用这个util 直接自己生成token字符串 过期时间存sql里面了
+     * app 里面倒是用了
+     * 有点奇怪 暂时不管他
+     *
+     * 暂时先用着 不行再换另外一个 jwt util
+     *
+     * 坑 将set方法的静态static 去点即可，因为@ConfigurationProperties只会调用 非静态的set方法
      */
-    public String generateToken(long userId) {
+    public static String generateToken(String username,String userType) {
         Date nowDate = new Date();
         //过期时间
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", username);
+        claims.put("userType", userType);
+        //先用 claims Subject 暂时不知道怎么取出来
 
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setSubject(userId+"")
+                .setSubject(username)
+                .setClaims(claims)
                 .setIssuedAt(nowDate)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
-    public Claims getClaimByToken(String token) {
+    public static Claims getClaimByToken(String token) {
         try {
             return Jwts.parser()
                     .setSigningKey(secret)
@@ -65,31 +83,34 @@ public class JwtUtils {
      * token是否过期
      * @return  true：过期
      */
-    public boolean isTokenExpired(Date expiration) {
+    public  boolean isTokenExpired(Date expiration) {
         return expiration.before(new Date());
     }
 
-    public String getSecret() {
+    public   String getSecret() {
         return secret;
     }
 
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
 
-    public long getExpire() {
+    public  long getExpire() {
         return expire;
     }
 
-    public void setExpire(long expire) {
-        this.expire = expire;
-    }
 
-    public String getHeader() {
+    public  String getHeader() {
         return header;
     }
 
-    public void setHeader(String header) {
-        this.header = header;
+
+    public  void setSecret(String secret) {
+        JwtUtils.secret = secret;
+    }
+
+    public  void setExpire(long expire) {
+        JwtUtils.expire = expire;
+    }
+
+    public  void setHeader(String header) {
+        JwtUtils.header = header;
     }
 }

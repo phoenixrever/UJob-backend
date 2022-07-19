@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="io.renren.modules.front.dao.JobDao">
+<mapper namespace="io.renren.modules.front.dao.CaseDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="io.renren.modules.front.entity.JobEntity" id="jobMap">
+    <resultMap type="io.renren.modules.front.entity.CaseEntity" id="caseMap">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="menu" column="menu"/>
-        <result property="language" column="language"/>
-        <result property="db" column="db"/>
-        <result property="os" column="os"/>
+        <result property="feature" column="feature"/>
         <result property="experience" column="experience"/>
         <result property="area" column="area"/>
         <result property="japanese" column="japanese"/>
@@ -19,12 +17,12 @@
         <result property="phone" column="phone"/>
         <result property="station" column="station"/>
         <result property="salary" column="salary"/>
-        <result property="distance" column="transportation"/>
+        <result property="distance" column="distance"/>
         <result property="detail" column="detail"/>
-        <result property="pg" column="pg"/>
-        <result property="se" column="se"/>
-        <result property="bse" column="bse"/>
-        <result property="leader" column="leader"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
     </resultMap>
 
 

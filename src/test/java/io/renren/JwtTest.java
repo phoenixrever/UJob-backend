@@ -1,5 +1,6 @@
 package io.renren;
 
+import io.renren.common.utils.Constant;
 import io.renren.modules.app.utils.JwtUtils;
 
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ public class JwtTest {
 
     @Test
     public void test() {
-        String token = jwtUtils.generateToken(1);
+        String token = jwtUtils.generateToken("shadow",Constant.GENERAL_USER);
         //int a=10/0;
         System.out.println("--------------JWTTEST----------");
         System.out.println(token);

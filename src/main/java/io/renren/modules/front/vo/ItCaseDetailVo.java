@@ -3,16 +3,12 @@ package io.renren.modules.front.vo;
 import lombok.Data;
 
 @Data
-public class JobDetailVo {
+public class ItCaseDetailVo {
     private Integer id;
     /**
      * 案件名称
      */
     private String name;
-    /**
-     * 所属分类
-     */
-    private String menu;
     /**
      * 开发语言 "," 分割
      */

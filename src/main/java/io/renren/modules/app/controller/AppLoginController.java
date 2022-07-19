@@ -9,6 +9,7 @@
 package io.renren.modules.app.controller;
 
 
+import io.renren.common.utils.Constant;
 import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.app.form.LoginForm;
@@ -52,7 +53,7 @@ public class AppLoginController {
         long userId = userService.login(form);
 
         //生成token
-        String token = jwtUtils.generateToken(userId);
+        String token = jwtUtils.generateToken("username",Constant.GENERAL_USER);
 
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);

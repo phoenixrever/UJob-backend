@@ -9,6 +9,7 @@
 package io.renren.common.utils;
 
 import io.renren.common.exception.RRException;
+import io.renren.modules.front.entity.GeneralUserEntity;
 import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -31,6 +32,10 @@ public class ShiroUtils {
 
 	public static SysUserEntity getUserEntity() {
 		return (SysUserEntity)SecurityUtils.getSubject().getPrincipal();
+	}
+
+	public static GeneralUserEntity getGeneralUserEntity() {
+		return (GeneralUserEntity)SecurityUtils.getSubject().getPrincipal();
 	}
 
 	public static Long getUserId() {

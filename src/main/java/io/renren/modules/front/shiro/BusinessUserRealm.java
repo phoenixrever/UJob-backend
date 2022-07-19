@@ -1,16 +1,8 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+package io.renren.modules.front.shiro;
 
-package io.renren.modules.sys.oauth2;
-
-import io.renren.common.utils.Constant;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.entity.SysUserTokenEntity;
+import io.renren.modules.sys.oauth2.OAuth2Token;
 import io.renren.modules.sys.service.ShiroService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -18,17 +10,14 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 /**
- * 认证
- *
- * @bean 的方式和其他realm 一起注册
+ * 前端企业用户登录Realm
  */
+public class BusinessUserRealm extends AuthorizingRealm {
 
-public class OAuth2Realm extends AuthorizingRealm {
     @Autowired
     private ShiroService shiroService;
 
@@ -45,7 +34,7 @@ public class OAuth2Realm extends AuthorizingRealm {
         SysUserEntity user = (SysUserEntity)principals.getPrimaryPrincipal();
         Long userId = user.getUserId();
 
-        //用户权限列表  todo 好像并没有设置role 有空查下前端有没有设置role
+        //用户权限列表
         Set<String> permsSet = shiroService.getUserPermissions(userId);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -60,7 +49,7 @@ public class OAuth2Realm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String accessToken = (String) token.getPrincipal();
 
-        //根据accessToken，查询用户信息
+        //根据accessToken，查询用户信息 todo存到redis
         SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
         //token失效
         if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){

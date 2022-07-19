@@ -1,36 +1,31 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+package io.renren.modules.front.shiro;
 
-package io.renren.modules.sys.oauth2;
-
+import io.jsonwebtoken.Claims;
 import io.renren.common.utils.Constant;
-import io.renren.modules.sys.entity.SysUserEntity;
-import io.renren.modules.sys.entity.SysUserTokenEntity;
+import io.renren.common.utils.RedisUtils;
+import io.renren.modules.app.utils.JwtUtils;
+import io.renren.modules.front.entity.GeneralUserEntity;
+import io.renren.modules.sys.oauth2.OAuth2Token;
 import io.renren.modules.sys.service.ShiroService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 /**
- * 认证
- *
- * @bean 的方式和其他realm 一起注册
+ * 前端一般用户登录Realm
  */
+public class GeneralUserRealm extends AuthorizingRealm {
 
-public class OAuth2Realm extends AuthorizingRealm {
     @Autowired
     private ShiroService shiroService;
+    @Autowired
+    private RedisUtils  redisUtils;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -42,11 +37,11 @@ public class OAuth2Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        SysUserEntity user = (SysUserEntity)principals.getPrimaryPrincipal();
+        GeneralUserEntity user = (GeneralUserEntity)principals.getPrimaryPrincipal();
         Long userId = user.getUserId();
 
-        //用户权限列表  todo 好像并没有设置role 有空查下前端有没有设置role
-        Set<String> permsSet = shiroService.getUserPermissions(userId);
+        //用户权限列表
+        Set<String> permsSet = shiroService.getGeneralUserPermissions(userId);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(permsSet);
@@ -61,20 +56,31 @@ public class OAuth2Realm extends AuthorizingRealm {
         String accessToken = (String) token.getPrincipal();
 
         //根据accessToken，查询用户信息
-        SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-        //token失效
-        if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
+        Claims claim = JwtUtils.getClaimByToken(accessToken);
+        if (claim == null) {
+            throw new IncorrectCredentialsException("token失效，请重新登录");
+        }
+        String username = (String) claim.get("username");
+
+        //去redis里面查下是否有这个token 没有就是失效了 或者token不正确
+        String redis_token = redisUtils.get(Constant.GENERAL_USER_TOKEN_PREFIX + username);
+        if(StringUtils.isBlank(redis_token)){
             throw new IncorrectCredentialsException("token失效，请重新登录");
         }
 
         //查询用户信息
-        SysUserEntity user = shiroService.queryUser(tokenEntity.getUserId());
+        GeneralUserEntity generalUser = shiroService.getGeneralUser(username);
+
+        if (generalUser == null) {
+            throw new UnknownAccountException("用户不存在");
+        }
+
         //账号锁定
-        if(user.getStatus() == 0){
+        if(generalUser.getStatus() == 0){
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, accessToken, getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(generalUser, accessToken, getName());
         return info;
     }
 }

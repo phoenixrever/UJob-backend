@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
 
 /**
  * 案件列表
@@ -18,8 +17,8 @@ import org.springframework.data.annotation.CreatedBy;
  * @date 2022-07-08 19:48:10
  */
 @Data
-@TableName("tb_job")
-public class JobEntity implements Serializable {
+@TableName("tb_it_case")
+public class ItCaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -31,10 +30,7 @@ public class JobEntity implements Serializable {
 	 * 案件名称
 	 */
 	private String name;
-	/**
-	 * 所属分类
-	 */
-	private Integer menu;
+
 	/**
 	 * 开发语言 "," 分割
 	 */
