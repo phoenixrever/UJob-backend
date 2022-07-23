@@ -26,7 +26,7 @@
 		<quartz.version>2.3.0</quartz.version>
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.fileupload.version>1.2.2</commons.fileupload.version>
-		<commons.io.version>2.5</commons.io.version>
+		<commons.io.version>2.11.0</commons.io.version>
 		<commons.codec.version>1.10</commons.codec.version>
 		<commons.configuration.version>1.10</commons.configuration.version>
 		<shiro.version>1.9.0</shiro.version>
@@ -197,6 +197,12 @@
 			<groupId>com.github.axet</groupId>
 			<artifactId>kaptcha</artifactId>
 			<version>${kaptcha.version}</version>
+		</dependency>
+		<!--java word 模板 制作简历-->
+		<dependency>
+			<groupId>com.deepoove</groupId>
+			<artifactId>poi-tl</artifactId>
+			<version>1.12.0</version>
 		</dependency>
 
 		<!--swagger-->

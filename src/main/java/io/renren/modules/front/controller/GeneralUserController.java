@@ -21,6 +21,8 @@ import io.renren.common.utils.R;
  * @author phoenixhell
  * @email phoenixrever@gmail.com
  * @date 2022-07-18 14:22:59
+ *
+ *   //获取general用户需要登录  不加/front 前缀
  */
 @RestController
 @RequestMapping("/generaluser")

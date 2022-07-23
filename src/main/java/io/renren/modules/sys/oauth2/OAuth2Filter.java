@@ -61,6 +61,8 @@ public class OAuth2Filter extends AuthenticatingFilter {
         String userType =null;
         if (claim != null) {
             userType = (String)claim.get("userType");
+        }else {
+            userType = Constant.SYS_USER;
         }
         return userType;
     }

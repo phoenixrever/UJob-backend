@@ -62,7 +62,7 @@ public class ShiroConfig {
     }
 
     @Bean("securityManager")
-    public SecurityManager securityManager(OAuth2Realm oAuth2Realm) {
+    public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //securityManager.setRealm(oAuth2Realm);
         //添加多个认证realm
