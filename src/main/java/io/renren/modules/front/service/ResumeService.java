@@ -20,5 +20,7 @@ public interface ResumeService extends IService<ResumeEntity> {
     void saveWithCertificate(ResumeEntity resume);
 
     ResumeEntity getWithCertificateById(Long id);
+
+    void updateWithCertificate(ResumeEntity resume);
 }
 

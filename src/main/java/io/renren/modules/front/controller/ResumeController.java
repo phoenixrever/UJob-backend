@@ -1,6 +1,7 @@
 package io.renren.modules.front.controller;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -78,9 +79,9 @@ public class ResumeController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("front:resume:update")
+    //@RequiresPermissions("front:resume:update")
     public R update(@RequestBody ResumeEntity resume){
-		resumeService.updateById(resume);
+		resumeService.updateWithCertificate(resume);
 
         return R.ok();
     }
@@ -107,14 +108,13 @@ public class ResumeController {
         XWPFTemplate template = makeDoc(resume);
         response.setContentType("application/octet-stream");
         //原因:跨域后系统为了安全去掉自定义头
-        // 解决自定义头被拦截的问题
 
         // 解决自定义头被拦截的问题
         //response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(zipFileName, "UTF-8"));
         response.setHeader("Access-Control-Expose-Headers","Content-Disposition");
 
         //自定义name没用的必须要Content-disposition 好像
-        response.setHeader("Content-disposition","attachment;filename="+resume.getName()+".docx");
+        response.setHeader("Content-disposition","attachment;filename="+ URLEncoder.encode(resume.getName(), "UTF-8")+".docx");
 
         // HttpServletResponse response
         OutputStream out = response.getOutputStream();

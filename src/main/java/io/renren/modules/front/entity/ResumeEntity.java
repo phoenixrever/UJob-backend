@@ -131,6 +131,10 @@ public class ResumeEntity implements Serializable {
 	 */
 	private String graduationDate;
 	/**
+	 * 学位
+	 */
+	private String degree;
+	/**
 	 * 専攻
 	 */
 	private String major;
