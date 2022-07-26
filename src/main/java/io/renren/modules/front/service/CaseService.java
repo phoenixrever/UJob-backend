@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.front.entity.CaseEntity;
 import io.renren.modules.front.vo.CaseDetailVo;
+import org.apache.poi.ss.formula.functions.T;
+
 
 import java.util.Map;
 
@@ -20,6 +22,8 @@ public interface CaseService extends IService<CaseEntity> {
 
     PageUtils queryDetailPage(Map<String, Object> params);
 
-    CaseDetailVo getDetailById(Integer id);
+    CaseDetailVo getDetailById(Long id);
+
+    PageUtils queryHistoryPage(Map<String, Object> params);
 }
 

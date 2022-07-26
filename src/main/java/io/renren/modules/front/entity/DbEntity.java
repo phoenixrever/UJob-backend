@@ -15,7 +15,7 @@ import lombok.Data;
  * @date 2022-07-08 19:48:10
  */
 @Data
-@TableName("tb_db")
+@TableName("ft_db")
 public class DbEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

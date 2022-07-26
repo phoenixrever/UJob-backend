@@ -3,7 +3,11 @@ package io.renren.modules.front.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.renren.modules.front.entity.GeneralUserEntity;
+import io.renren.modules.front.entity.UserCaseInfoEntity;
+import io.renren.modules.front.service.UserCaseInfoService;
 import io.renren.modules.front.vo.ItCaseDetailVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +35,8 @@ import io.renren.common.utils.R;
 public class ItCaseController {
     @Autowired
     private ItCaseService jobService;
+    @Autowired
+    private UserCaseInfoService userCaseInfoService;
 
     /**
      * 列表
@@ -62,6 +68,8 @@ public class ItCaseController {
     //@RequiresPermissions("front:job:info")
     public R info(@PathVariable("id") Integer id){
         ItCaseDetailVo jobDetailVo = jobService.getDetailById(id);
+
+
 
         return R.ok().put("jobDetail", jobDetailVo);
     }

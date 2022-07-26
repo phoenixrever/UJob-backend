@@ -15,7 +15,7 @@ import lombok.Data;
  * @date 2022-07-16 23:27:38
  */
 @Data
-@TableName("tb_case")
+@TableName("ft_case")
 public class CaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

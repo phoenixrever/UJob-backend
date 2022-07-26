@@ -92,6 +92,7 @@ public class ShiroConfig {
 
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/front/resume/**", "oauth2");
+        filterMap.put("/front/usercaseinfo/**", "oauth2");
         filterMap.put("/front/**", "anon");
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");

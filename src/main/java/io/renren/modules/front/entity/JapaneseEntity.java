@@ -15,7 +15,7 @@ import lombok.Data;
  * @date 2022-07-08 19:48:10
  */
 @Data
-@TableName("tb_japanese")
+@TableName("ft_japanese")
 public class JapaneseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

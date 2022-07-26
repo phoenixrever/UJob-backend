@@ -30,6 +30,8 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeDao, ResumeEntity> impl
 
     @Autowired
     private CertificateService certificateService;
+    @Autowired
+    private GeneralUserServiceImpl generalUserService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -46,20 +48,21 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeDao, ResumeEntity> impl
     public void saveWithCertificate(ResumeEntity resume) {
         GeneralUserEntity user = (GeneralUserEntity) SecurityUtils.getSubject().getPrincipal();
         resume.setUserId(user.getUserId());
-        boolean save = this.save(resume);
-        if (!save) {
-           throw new RRException("保存简历失败");
-        }
+
+         //save 出错会自动抛出错误触发回滚 不需要捕获 需要自定义错误  可以捕获
+         this.save(resume);
         List<CertificateEntity> certificateEntities = resume.getCertificateEntities();
         if (certificateEntities.size() > 0) {
             certificateEntities.forEach(certificate -> {
                 certificate.setResumeId(resume.getId());
-                boolean saveResult = certificateService.save(certificate);
-                if (!saveResult) {
-                    throw new RRException("保存证书失败");
-                }
+                 certificateService.save(certificate);
             });
         }
+        //user 里面保存resumeId 的冗余字段 暂时保留以后再研究
+        GeneralUserEntity generalUser = new GeneralUserEntity();
+        generalUser.setUserId(user.getUserId());
+        generalUser.setResumeId(resume.getId());
+        generalUserService.updateById(generalUser);
     }
 
     @Override
@@ -77,17 +80,11 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeDao, ResumeEntity> impl
     @Transactional (rollbackFor = Exception.class)
     @Override
     public void updateWithCertificate(ResumeEntity resume) {
-        boolean b = this.updateById(resume);
-        if (!b) {
-            throw new RRException("修改简历失败");
-        }
+        this.updateById(resume);
         //修改证书 先删除原来的证书，再添加新的证书 update的话太麻烦
         List<CertificateEntity> certificateEntities = certificateService.query().eq("resume_id", resume.getId()).list();
         if (certificateEntities.size() > 0) {
-            boolean removeByIds = certificateService.removeByIds(certificateEntities.stream().map(CertificateEntity::getId).collect(Collectors.toList()));
-            if (!removeByIds) {
-                throw new RRException("删除证书失败");
-            }
+           certificateService.removeByIds(certificateEntities.stream().map(CertificateEntity::getId).collect(Collectors.toList()));
         }
 
         List<CertificateEntity> entityList = resume.getCertificateEntities();
@@ -96,10 +93,7 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeDao, ResumeEntity> impl
                 certificate.setResumeId(resume.getId());
                 //保存id在的话有没有影响忘记了 有空查一下 反正null是没错的
                 certificate.setId(null);
-                boolean saveResult = certificateService.save(certificate);
-                if (!saveResult) {
-                    throw new RRException("保存证书失败");
-                }
+                certificateService.save(certificate);
             });
         }
     }

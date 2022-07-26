@@ -22,7 +22,7 @@ import java.util.Date;
  * @author Mark sunlightcs@gmail.com
  */
 @Data
-@TableName("tb_user")
+@TableName("ft_user")
 public class UserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

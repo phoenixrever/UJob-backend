@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.renren.common.exception.RRException;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.modules.front.dao.CaseDao;
 import io.renren.modules.front.entity.*;
 import io.renren.modules.front.service.*;
 import io.renren.modules.front.vo.CaseDetailVo;
+import io.renren.modules.front.vo.UserCaseInfoVo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("caseService")
@@ -35,6 +39,9 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
     private AreaService areaService;
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private UserCaseInfoService userCaseInfoService;
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CaseEntity> page = this.page(
@@ -53,6 +60,7 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
         int menuId = 1;
         int area = 1;
         int japanese = 1;
+
 
         if(params.get("menu")!=null){
             menuId = Integer.parseInt((String) params.get("menu"));
@@ -99,10 +107,67 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
     }
 
     @Override
-    public CaseDetailVo getDetailById(Integer id) {
+    public CaseDetailVo getDetailById(Long id) {
         CaseEntity caseEntity = this.getById(id);
         CaseDetailVo caseDetailVo = changeIdToName(caseEntity);
         return caseDetailVo;
+    }
+
+    //这边要把所有都查出来 我的投递也要用到
+    //为了用 in 不在for循环里面查多做了一点
+    @Override
+    public PageUtils queryHistoryPage(Map<String, Object> params) {
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if (principal == null) {
+           throw new RRException("请登录");
+        }
+        GeneralUserEntity user = (GeneralUserEntity) principal;
+        List<UserCaseInfoEntity> userCaseInfoEntities = userCaseInfoService.query().eq("user_id", user.getUserId()).orderByDesc("updated_time").list();
+        if(userCaseInfoEntities.size()==0){
+            return new PageUtils(new Page<>());
+        }
+        List<Long> list = userCaseInfoEntities.stream().map(userCaseInfoEntity -> userCaseInfoEntity.getCaseId()).collect(Collectors.toList());
+
+        //拼接Sql  因为有分页需求 不能所有数据查询出来 再排序
+        StringBuilder builder = new StringBuilder();
+        builder.append("order by field(id,");
+        int length = list.size();
+        for(int i= 0; i<length; i++){
+            if(i==0){
+                builder.append(list.get(i));
+            }else{
+                builder.append(",")
+                        .append(list.get(i));
+            }
+            if (i==length-1){
+                builder.append(")");
+            }
+        }
+
+        IPage<CaseEntity> page = this.page(
+                new Query<CaseEntity>().getPage(params),
+                new QueryWrapper<CaseEntity>().last(builder.toString())
+        );
+
+        List<CaseEntity> records = page.getRecords();
+        List<UserCaseInfoVo> userCaseInfoVos = new ArrayList<>();
+
+        for (int i = 0; i < records.size() ; i++) {
+            CaseDetailVo caseDetailVo = changeIdToName(records.get(i));
+            UserCaseInfoVo userCaseInfoVo = new UserCaseInfoVo();
+            //2边id顺序是一样的
+            BeanUtils.copyProperties(caseDetailVo, userCaseInfoVo);
+            BeanUtils.copyProperties(userCaseInfoEntities.get(i), userCaseInfoVo);
+            userCaseInfoVos.add(userCaseInfoVo);
+        }
+
+        //UserPage<T> extends Page<T>  自定义setRecords 方法
+        Page<UserCaseInfoVo> caseDetailVoPage = new Page<>();
+        //老的分页属性全部复制过来 (records T 泛型不同不能复制 )
+        BeanUtils.copyProperties(page, caseDetailVoPage);
+
+        caseDetailVoPage.setRecords(userCaseInfoVos);
+        return new PageUtils(caseDetailVoPage);
     }
 
     private CaseDetailVo changeIdToName(CaseEntity caseEntity) {

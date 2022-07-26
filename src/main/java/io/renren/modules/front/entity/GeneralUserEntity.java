@@ -63,7 +63,7 @@ public class GeneralUserEntity implements Serializable {
 	/**
 	 * 用户简历
 	 */
-	private Integer resumeId;
+	private Long resumeId;
 	/**
 	 * 收到的消息 逗号分开，消息那边也冗余保存下用户名
 	 */

@@ -4,6 +4,8 @@ import io.renren.modules.front.entity.CaseEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 案件列表
  * 
@@ -13,5 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CaseDao extends BaseMapper<CaseEntity> {
-	
+	List<CaseEntity> getCaseByIdOrder(List<Long> ids);
 }

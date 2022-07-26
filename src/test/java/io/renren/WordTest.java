@@ -2,13 +2,18 @@ package io.renren;
 
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.Pictures;
+import io.renren.modules.front.entity.AreaEntity;
 import io.renren.modules.front.entity.CertificateEntity;
+import io.renren.modules.front.entity.OsEntity;
 import io.renren.modules.front.entity.ResumeEntity;
+import io.renren.modules.front.service.AreaService;
+import io.renren.modules.front.service.OsService;
 import io.renren.modules.front.service.ResumeService;
 import org.junit.After;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -22,6 +27,10 @@ import java.util.List;
 
 @SpringBootTest
 public class WordTest {
+    @Autowired
+    private AreaService areaService;
+    @Autowired
+    private OsService osService;
     @Autowired
     private ResumeService resumeService;
 
@@ -45,33 +54,33 @@ public class WordTest {
         map.put("month", resume.getBirthday().split("-")[1]);
         map.put("day", resume.getBirthday().split("-")[2]);
         map.put("age", LocalDate.now().getYear() - Integer.parseInt(resume.getBirthday().split("-")[0]));
-        map.put("hiraganaAddress", resume.getCity()+resume.getArea()+resume.getAreaDetail());
-        map.put("address", resume.getCity()+resume.getArea()+resume.getAreaDetail());
+        map.put("hiraganaAddress", resume.getCity() + resume.getArea() + resume.getAreaDetail());
+        map.put("address", resume.getCity() + resume.getArea() + resume.getAreaDetail());
         map.put("p1", resume.getPhone().substring(0, 3));//080 3302 8999
         map.put("p2", resume.getPhone().substring(3, 7));//3302 8999
         map.put("p3", resume.getPhone().substring(7));//8999
         map.put("email", resume.getEmail());
         map.put("sYear", resume.getAdmissionDate().split("-")[0]);
         map.put("sMonth", resume.getAdmissionDate().split("-")[1]);
-        map.put("schoolName1", resume.getSchoolName()+resume.getMajor()+" "+"入学");
+        map.put("schoolName1", resume.getSchoolName() + resume.getMajor() + " " + "入学");
         map.put("eYear", resume.getGraduationDate().split("-")[0]);
         map.put("eMonth", resume.getGraduationDate().split("-")[1]);
-        map.put("schoolName2", resume.getSchoolName()+resume.getMajor()+" "+"卒業");
+        map.put("schoolName2", resume.getSchoolName() + resume.getMajor() + " " + "卒業");
 
         map.put("cYear", resume.getHiredDate().split("-")[0]);//2010-02
         map.put("cMonth", resume.getHiredDate().split("-")[1]);
-        map.put("companyName1", resume.getCompanyName()+" "+"入職");
+        map.put("companyName1", resume.getCompanyName() + " " + "入職");
 
         map.put("cYear1", resume.getLeaveDate().split("-")[0]);//2010-02
         map.put("cMonth1", resume.getLeaveDate().split("-")[1]);
-        map.put("companyName2", resume.getCompanyName()+" "+"退職");
+        map.put("companyName2", resume.getCompanyName() + " " + "退職");
 
         //資　格・免　許
         List<CertificateEntity> certificateEntities = resume.getCertificateEntities();
-        for (int i = 0; i <certificateEntities.size(); i++) {
-            map.put("cy"+(i+1), certificateEntities.get(i).getDate().split("-")[0]);
-            map.put("cm"+(i+1), certificateEntities.get(i).getDate().split("-")[1]);
-            map.put("c"+(i+1), certificateEntities.get(i).getName());
+        for (int i = 0; i < certificateEntities.size(); i++) {
+            map.put("cy" + (i + 1), certificateEntities.get(i).getDate().split("-")[0]);
+            map.put("cm" + (i + 1), certificateEntities.get(i).getDate().split("-")[1]);
+            map.put("c" + (i + 1), certificateEntities.get(i).getName());
         }
 
         map.put("hobby", resume.getHobby());
@@ -82,5 +91,20 @@ public class WordTest {
 
         //template.writeAndClose(Files.newOutputStream(Paths.get(output.getPath()+"/output.docx")));
         template.writeAndClose(Files.newOutputStream(Paths.get("D:\\code\\renren-fast\\src\\main\\resources\\templates\\output.docx")));
+    }
+
+    //测试mybatis 事务异常回滚
+    //save 出错会自动抛出错误 不需要捕获
+    @Test
+    @Transactional
+    public void testTransaction() {
+        //name 改成unqiue
+        AreaEntity areaEntity = new AreaEntity();
+        areaEntity.setName("東京都");
+        areaService.save(areaEntity);
+
+        OsEntity osEntity = new OsEntity();
+        osEntity.setName("Windows");
+        osService.save(osEntity);
     }
 }
