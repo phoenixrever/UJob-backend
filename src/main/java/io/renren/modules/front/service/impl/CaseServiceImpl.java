@@ -42,6 +42,8 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
 
     @Autowired
     private UserCaseInfoService userCaseInfoService;
+
+    private final static int CASE_TYPE = 0;
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CaseEntity> page = this.page(
@@ -121,14 +123,15 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
         if (principal == null) {
            throw new RRException("请登录");
         }
+
         GeneralUserEntity user = (GeneralUserEntity) principal;
-        List<UserCaseInfoEntity> userCaseInfoEntities = userCaseInfoService.query().eq("user_id", user.getUserId()).orderByDesc("updated_time").list();
+        List<UserCaseInfoEntity> userCaseInfoEntities = userCaseInfoService.query().eq("user_id", user.getUserId()).eq("case_type", CASE_TYPE).orderByDesc("updated_time").list();
         if(userCaseInfoEntities.size()==0){
             return new PageUtils(new Page<>());
         }
         List<Long> list = userCaseInfoEntities.stream().map(userCaseInfoEntity -> userCaseInfoEntity.getCaseId()).collect(Collectors.toList());
 
-        //拼接Sql  因为有分页需求 不能所有数据查询出来 再排序
+        //拼接Sql按照id的顺序排序 因为有分页需求 不能所有数据查询出来再排序
         StringBuilder builder = new StringBuilder();
         builder.append("order by field(id,");
         int length = list.size();
@@ -146,7 +149,7 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
 
         IPage<CaseEntity> page = this.page(
                 new Query<CaseEntity>().getPage(params),
-                new QueryWrapper<CaseEntity>().last(builder.toString())
+                new QueryWrapper<CaseEntity>().in("id",list).last(builder.toString())
         );
 
         List<CaseEntity> records = page.getRecords();

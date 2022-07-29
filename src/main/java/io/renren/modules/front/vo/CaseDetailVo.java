@@ -78,4 +78,6 @@ public class CaseDetailVo {
      *
      */
     private Date updatedTime;
+
+    private Long businessUserId;
 }

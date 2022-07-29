@@ -72,4 +72,7 @@ public class ItCaseDetailVo {
     private Integer bse;
 
     private Integer leader;
+
+    private Long businessUserId;
+
 }

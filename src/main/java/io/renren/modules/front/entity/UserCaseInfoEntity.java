@@ -34,6 +34,12 @@ public class UserCaseInfoEntity implements Serializable {
 	 * 案件id
 	 */
 	private Long caseId;
+
+	/**
+	 * 案件类型 0 正社员 1 IT案件 默认0
+	 */
+	private Integer caseType;
+
 	/**
 	 * 是否投递过简历
 	 */
@@ -71,4 +77,5 @@ public class UserCaseInfoEntity implements Serializable {
 	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Date updatedTime;
 
+	private Long businessUserId;
 }

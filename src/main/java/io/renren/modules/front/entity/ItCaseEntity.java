@@ -107,4 +107,6 @@ public class ItCaseEntity implements Serializable {
 	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Date updatedTime;
 
+	private Long businessUserId;
+
 }

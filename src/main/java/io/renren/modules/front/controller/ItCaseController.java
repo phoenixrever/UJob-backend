@@ -66,12 +66,12 @@ public class ItCaseController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("front:job:info")
-    public R info(@PathVariable("id") Integer id){
-        ItCaseDetailVo jobDetailVo = jobService.getDetailById(id);
+    public R info(@PathVariable("id") Long id){
+        ItCaseDetailVo itCaseDetailVo = jobService.getDetailById(id);
 
 
 
-        return R.ok().put("jobDetail", jobDetailVo);
+        return R.ok().put("itCase", itCaseDetailVo);
     }
 
     /**

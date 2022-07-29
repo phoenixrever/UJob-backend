@@ -5,7 +5,9 @@ import java.util.Map;
 
 import io.renren.modules.front.entity.GeneralUserEntity;
 import io.renren.modules.front.service.CaseService;
+import io.renren.modules.front.service.ItCaseService;
 import io.renren.modules.front.vo.CaseDetailVo;
+import io.renren.modules.front.vo.ItCaseDetailVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,34 +38,41 @@ public class UserCaseInfoController {
     private UserCaseInfoService userCaseInfoService;
     @Autowired
     private CaseService caseService;
+    @Autowired
+    private ItCaseService itCaseService;
 
 
     /**
      * 查询案件信息
      * todo 问题来了 不登录是没用user的 所以不能记录历史记录
      * 暂时的解决方法 我写2个接口 前端看登录情况请求不同的接口
+     *
+     * 这边不用事务 历史记录没记录到也没大关系
      */
     @RequestMapping("/caseInfo/{id}")
     //@RequiresPermissions("front:case:info")
     public R infoLogin(@PathVariable("id") Long id){
+        int CASE_TYPE=0;
         CaseDetailVo caseDetailVo = caseService.getDetailById(id);
-
         //如果已经登录 记录到历史记录里面 每次查询都会记录一次
         //todo 如果未登录用 需不需要保存记录 登陆后合并 待决定
         Object principal = SecurityUtils.getSubject().getPrincipal();
         if(principal != null){
             //先查看对应关系是否存在
-            UserCaseInfoEntity caseInfoEntity = userCaseInfoService.query().eq("case_id", id).one();
+            UserCaseInfoEntity caseInfoEntity = userCaseInfoService.query().eq("case_id", id).eq("case_type", CASE_TYPE).one();
             if (caseInfoEntity == null) {
                 GeneralUserEntity generalUser = (GeneralUserEntity) principal;
                 Long userId = generalUser.getUserId();
                 UserCaseInfoEntity userCaseInfoEntity = new UserCaseInfoEntity();
                 userCaseInfoEntity.setCaseId(id);
                 userCaseInfoEntity.setUserId(userId);
+                userCaseInfoEntity.setCaseType(CASE_TYPE);
                 userCaseInfoEntity.setVisited(1);
+                userCaseInfoEntity.setBusinessUserId(caseDetailVo.getBusinessUserId());
                 userCaseInfoService.save(userCaseInfoEntity);
             }else {
                 caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
+                userCaseInfoService.updateById(caseInfoEntity);
             }
         }
 
@@ -71,24 +80,67 @@ public class UserCaseInfoController {
     }
 
     /**
-     * 历史记录
+     * 查询iT案件信息
+     *
      */
-    @RequestMapping("/detailList")
+    @RequestMapping("/itCaseInfo/{id}")
+    //@RequiresPermissions("front:case:info")
+    public R itInfoLogin(@PathVariable("id") Long id){
+        int CASE_TYPE=1;
+
+        ItCaseDetailVo itCaseDetailVo = itCaseService.getDetailById(id);
+
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if(principal != null){
+            //先查看对应关系是否存在
+            UserCaseInfoEntity caseInfoEntity = userCaseInfoService.query().eq("case_id", id).eq("case_type", CASE_TYPE).one();
+            if (caseInfoEntity == null) {
+                GeneralUserEntity generalUser = (GeneralUserEntity) principal;
+                Long userId = generalUser.getUserId();
+                UserCaseInfoEntity userCaseInfoEntity = new UserCaseInfoEntity();
+                userCaseInfoEntity.setCaseId(id);
+                userCaseInfoEntity.setUserId(userId);
+                userCaseInfoEntity.setCaseType(CASE_TYPE);
+                userCaseInfoEntity.setVisited(1);
+                userCaseInfoEntity.setBusinessUserId(itCaseDetailVo.getBusinessUserId());
+                userCaseInfoService.save(userCaseInfoEntity);
+            }else {
+                caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
+                userCaseInfoService.updateById(caseInfoEntity);
+            }
+        }
+
+        return R.ok().put("itCase", itCaseDetailVo);
+    }
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
     //@RequiresPermissions("front:usercaseinfo:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = caseService.queryHistoryPage(params);
-
+        PageUtils page = userCaseInfoService.queryPage(params);
         return R.ok().put("page", page);
     }
 
     /**
-     * 用户浏览历史 写这里 shiro path 号设置些
+     * 用户浏览历史
      */
     @RequestMapping("/case/history")
-    @RequiresPermissions("front:usercaseinfo:list")
+    //@RequiresPermissions("front:usercaseinfo:list")
     public R listHistory(@RequestParam Map<String, Object> params){
-        PageUtils page = userCaseInfoService.queryPage(params);
-
+        int caseType = 0;
+        PageUtils page =null;
+        if( params.get("caseType")  != null){
+            caseType = Integer.parseInt((String) params.get("caseType"));
+        }
+        switch (caseType){
+            case 0:
+                page = caseService.queryHistoryPage(params);
+                break;
+            case 1:
+                page = itCaseService.queryHistoryPage(params);
+                break;
+        }
         return R.ok().put("page", page);
     }
 

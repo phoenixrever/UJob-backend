@@ -1,15 +1,12 @@
 package io.renren.modules.front.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import io.renren.modules.front.entity.UserCaseInfoEntity;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class UserCaseInfoVo {
+public class UserItCaseInfoVo {
   /**
    * id
    */
@@ -27,7 +24,6 @@ public class UserCaseInfoVo {
   private Integer caseType;
 
   private Integer favorite;
-
   /**
    * 是否投递过简历
    */
@@ -64,21 +60,22 @@ public class UserCaseInfoVo {
   private Date updatedTime;
 
 
-
   /**
    * 案件名称
    */
   private String name;
   /**
-   * 业务分野
+   * 开发语言 "," 分割
    */
-  private String menu;
-
+  private String language;
   /**
-   * 福利标签 "," 分割
+   * 使用数据库 ","分割
    */
-  private String feature;
-
+  private String db;
+  /**
+   * 使用操作系统
+   */
+  private String os;
   /**
    * 工作经验
    */
@@ -119,14 +116,17 @@ public class UserCaseInfoVo {
    * 案例详情 待定 会改
    */
   private String detail;
-  /**
-   *
-   */
   private String startDate;
-  /**
-   *
-   */
   private String endDate;
+
+
+  private Integer pg;
+
+  private Integer se;
+
+  private Integer bse;
+
+  private Integer leader;
 
   private Long businessUserId;
 }

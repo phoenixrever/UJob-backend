@@ -1,9 +1,14 @@
 package io.renren.modules.front.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.renren.common.exception.RRException;
 import io.renren.modules.front.entity.*;
 import io.renren.modules.front.service.*;
+import io.renren.modules.front.vo.CaseDetailVo;
 import io.renren.modules.front.vo.ItCaseDetailVo;
+import io.renren.modules.front.vo.UserCaseInfoVo;
+import io.renren.modules.front.vo.UserItCaseInfoVo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -36,8 +42,10 @@ public class ItCaseServiceImpl extends ServiceImpl<ItCaseDao, ItCaseEntity> impl
     private DbService dbService;
     @Autowired
     private AreaService areaService;
+    @Autowired
+    private UserCaseInfoService userCaseInfoService;
 
-
+    private final static int CASE_TYPE = 1;
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<ItCaseEntity> page = this.page(
@@ -107,10 +115,66 @@ public class ItCaseServiceImpl extends ServiceImpl<ItCaseDao, ItCaseEntity> impl
     }
 
     @Override
-    public ItCaseDetailVo getDetailById(Integer id) {
+    public ItCaseDetailVo getDetailById(Long id) {
         ItCaseEntity jobEntity = this.getById(id);
         ItCaseDetailVo jobDetailVo = changeIdToName(jobEntity);
         return jobDetailVo;
+    }
+
+    @Override
+    public PageUtils queryHistoryPage(Map<String, Object> params) {
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if (principal == null) {
+            throw new RRException("请登录");
+        }
+
+        GeneralUserEntity user = (GeneralUserEntity) principal;
+        List<UserCaseInfoEntity> userCaseInfoEntities = userCaseInfoService.query().eq("user_id", user.getUserId()).eq("case_type", CASE_TYPE).orderByDesc("updated_time").list();
+        if(userCaseInfoEntities.size()==0){
+            return new PageUtils(new Page<>());
+        }
+        List<Long> list = userCaseInfoEntities.stream().map(userCaseInfoEntity -> userCaseInfoEntity.getCaseId()).collect(Collectors.toList());
+
+        //拼接Sql按照id的顺序排序 因为有分页需求 不能所有数据查询出来再排序
+        StringBuilder builder = new StringBuilder();
+        builder.append("order by field(id,");
+        int length = list.size();
+        for(int i= 0; i<length; i++){
+            if(i==0){
+                builder.append(list.get(i));
+            }else{
+                builder.append(",")
+                        .append(list.get(i));
+            }
+            if (i==length-1){
+                builder.append(")");
+            }
+        }
+
+        IPage<ItCaseEntity> page = this.page(
+                new Query<ItCaseEntity>().getPage(params),
+                new QueryWrapper<ItCaseEntity>().in("id",list).last(builder.toString())
+        );
+
+        List<ItCaseEntity> records = page.getRecords();
+        List<UserItCaseInfoVo> userItCaseInfoVos = new ArrayList<>();
+
+        for (int i = 0; i < records.size() ; i++) {
+            ItCaseDetailVo itCaseDetailVo = changeIdToName(records.get(i));
+            UserItCaseInfoVo userItCaseInfoVo = new UserItCaseInfoVo();
+            //2边id顺序是一样的
+            BeanUtils.copyProperties(itCaseDetailVo, userItCaseInfoVo);
+            BeanUtils.copyProperties(userCaseInfoEntities.get(i), userItCaseInfoVo);
+            userItCaseInfoVos.add(userItCaseInfoVo);
+        }
+
+        //UserPage<T> extends Page<T>  自定义setRecords 方法
+        Page<UserItCaseInfoVo> userItCaseInfoVoPage = new Page<>();
+        //老的分页属性全部复制过来 (records T 泛型不同不能复制 )
+        BeanUtils.copyProperties(page, userItCaseInfoVoPage);
+
+        userItCaseInfoVoPage.setRecords(userItCaseInfoVos);
+        return new PageUtils(userItCaseInfoVoPage);
     }
 
     //公共方法 所有select id 换成对应name

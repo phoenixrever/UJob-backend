@@ -20,6 +20,8 @@ public interface ItCaseService extends IService<ItCaseEntity> {
 
     PageUtils queryDetailPage(Map<String, Object> params);
 
-    ItCaseDetailVo getDetailById(Integer id);
+    ItCaseDetailVo getDetailById(Long id);
+
+    PageUtils queryHistoryPage(Map<String, Object> params);
 }
 

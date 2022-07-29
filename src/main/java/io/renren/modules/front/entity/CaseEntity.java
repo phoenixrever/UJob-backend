@@ -95,4 +95,5 @@ public class CaseEntity implements Serializable {
 	 */
 	private Date updatedTime;
 
+	private Long businessUserId;
 }
