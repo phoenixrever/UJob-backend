@@ -40,6 +40,8 @@ public class UserCaseInfoEntity implements Serializable {
 	 */
 	private Integer caseType;
 
+	private Integer favorite;
+
 	/**
 	 * 是否投递过简历
 	 */

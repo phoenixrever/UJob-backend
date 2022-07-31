@@ -1,20 +1,15 @@
 package io.renren.modules.front.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.renren.modules.front.entity.MenuEntity;
-import io.renren.modules.front.service.MenuService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
+import io.renren.modules.front.entity.JobTypeEntity;
+import io.renren.modules.front.service.JobTypeService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -26,10 +21,10 @@ import io.renren.common.utils.R;
  * @date 2022-07-08 19:48:10
  */
 @RestController
-@RequestMapping("front/menu")
-public class MenuController {
+@RequestMapping("front/jobType")
+public class JobTypeController {
     @Autowired
-    private MenuService menuService;
+    private JobTypeService jobTypeService;
 
     /**
      * 列表
@@ -37,7 +32,7 @@ public class MenuController {
     @RequestMapping("/list")
     //@RequiresPermissions("front:menu:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = menuService.queryPage(params);
+        PageUtils page = jobTypeService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -49,9 +44,9 @@ public class MenuController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("front:menu:info")
     public R info(@PathVariable("id") Integer id){
-		MenuEntity menu = menuService.getById(id);
+		JobTypeEntity menu = jobTypeService.getById(id);
 
-        return R.ok().put("menu", menu);
+        return R.ok().put("jobTypes", menu);
     }
 
     /**
@@ -59,8 +54,8 @@ public class MenuController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("front:menu:save")
-    public R save(@RequestBody MenuEntity menu){
-		menuService.save(menu);
+    public R save(@RequestBody JobTypeEntity menu){
+		jobTypeService.save(menu);
 
         return R.ok();
     }
@@ -70,8 +65,8 @@ public class MenuController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("front:menu:update")
-    public R update(@RequestBody MenuEntity menu){
-		menuService.updateById(menu);
+    public R update(@RequestBody JobTypeEntity menu){
+		jobTypeService.updateById(menu);
 
         return R.ok();
     }
@@ -82,7 +77,7 @@ public class MenuController {
     @RequestMapping("/delete")
     @RequiresPermissions("front:menu:delete")
     public R delete(@RequestBody Integer[] ids){
-		menuService.removeByIds(Arrays.asList(ids));
+		jobTypeService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.front.entity.AreaEntity;
-import io.renren.modules.front.service.AreaService;
+import io.renren.modules.front.entity.CityEntity;
+import io.renren.modules.front.service.CityService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -26,10 +26,10 @@ import io.renren.common.utils.R;
  * @date 2022-07-08 19:48:10
  */
 @RestController
-@RequestMapping("front/area")
-public class AreaController {
+@RequestMapping("front/city")
+public class CityController {
     @Autowired
-    private AreaService areaService;
+    private CityService cityService;
 
     /**
      * 列表
@@ -37,7 +37,7 @@ public class AreaController {
     @RequestMapping("/list")
     //@RequiresPermissions("front:area:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = areaService.queryPage(params);
+        PageUtils page = cityService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -49,7 +49,7 @@ public class AreaController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("front:area:info")
     public R info(@PathVariable("id") Integer id){
-		AreaEntity area = areaService.getById(id);
+		CityEntity area = cityService.getById(id);
 
         return R.ok().put("area", area);
     }
@@ -59,8 +59,8 @@ public class AreaController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("front:area:save")
-    public R save(@RequestBody AreaEntity area){
-		areaService.save(area);
+    public R save(@RequestBody CityEntity area){
+		cityService.save(area);
 
         return R.ok();
     }
@@ -70,8 +70,8 @@ public class AreaController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("front:area:update")
-    public R update(@RequestBody AreaEntity area){
-		areaService.updateById(area);
+    public R update(@RequestBody CityEntity area){
+		cityService.updateById(area);
 
         return R.ok();
     }
@@ -82,7 +82,7 @@ public class AreaController {
     @RequestMapping("/delete")
     @RequiresPermissions("front:area:delete")
     public R delete(@RequestBody Integer[] ids){
-		areaService.removeByIds(Arrays.asList(ids));
+		cityService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

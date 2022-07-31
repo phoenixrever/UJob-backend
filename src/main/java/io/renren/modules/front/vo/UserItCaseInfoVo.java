@@ -129,4 +129,5 @@ public class UserItCaseInfoVo {
   private Integer leader;
 
   private Long businessUserId;
+
 }

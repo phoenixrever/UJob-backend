@@ -4,18 +4,14 @@ import java.util.Arrays;
 import java.util.Map;
 
 import io.renren.modules.front.entity.GeneralUserEntity;
-import io.renren.modules.front.service.CaseService;
+import io.renren.modules.front.service.JobService;
 import io.renren.modules.front.service.ItCaseService;
-import io.renren.modules.front.vo.CaseDetailVo;
+import io.renren.modules.front.vo.JobDetailVo;
 import io.renren.modules.front.vo.ItCaseDetailVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.renren.modules.front.entity.UserCaseInfoEntity;
 import io.renren.modules.front.service.UserCaseInfoService;
@@ -37,7 +33,7 @@ public class UserCaseInfoController {
     @Autowired
     private UserCaseInfoService userCaseInfoService;
     @Autowired
-    private CaseService caseService;
+    private JobService jobService;
     @Autowired
     private ItCaseService itCaseService;
 
@@ -53,7 +49,7 @@ public class UserCaseInfoController {
     //@RequiresPermissions("front:case:info")
     public R infoLogin(@PathVariable("id") Long id){
         int CASE_TYPE=0;
-        CaseDetailVo caseDetailVo = caseService.getDetailById(id);
+        JobDetailVo jobDetailVo = jobService.getDetailById(id);
         //如果已经登录 记录到历史记录里面 每次查询都会记录一次
         //todo 如果未登录用 需不需要保存记录 登陆后合并 待决定
         Object principal = SecurityUtils.getSubject().getPrincipal();
@@ -68,7 +64,7 @@ public class UserCaseInfoController {
                 userCaseInfoEntity.setUserId(userId);
                 userCaseInfoEntity.setCaseType(CASE_TYPE);
                 userCaseInfoEntity.setVisited(1);
-                userCaseInfoEntity.setBusinessUserId(caseDetailVo.getBusinessUserId());
+                userCaseInfoEntity.setBusinessUserId(jobDetailVo.getBusinessUserId());
                 userCaseInfoService.save(userCaseInfoEntity);
             }else {
                 caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
@@ -76,7 +72,7 @@ public class UserCaseInfoController {
             }
         }
 
-        return R.ok().put("case", caseDetailVo);
+        return R.ok().put("case", jobDetailVo);
     }
 
     /**
@@ -135,13 +131,39 @@ public class UserCaseInfoController {
         }
         switch (caseType){
             case 0:
-                page = caseService.queryHistoryPage(params);
+                page = jobService.queryHistoryPage(params);
                 break;
             case 1:
                 page = itCaseService.queryHistoryPage(params);
                 break;
         }
         return R.ok().put("page", page);
+    }
+
+    /**
+     * favorite
+     */
+    @PostMapping("/setFavorite")
+    public R setFavorite(@RequestBody UserCaseInfoEntity userCaseInfo){
+        UserCaseInfoEntity userCaseInfoEntity = userCaseInfoService.query().eq("case_id", userCaseInfo.getCaseId()).eq("case_type", userCaseInfo.getCaseType()).one();
+        if (userCaseInfoEntity != null) {
+            userCaseInfoEntity.setFavorite(userCaseInfo.getFavorite());
+            userCaseInfoService.updateById(userCaseInfoEntity);
+        }
+        return R.ok();
+    }
+
+    /**
+     * favorite
+     */
+    @GetMapping("/favorite/{caseId}")
+    public R favorite(@PathVariable Long caseId){
+        Integer favorite=0;
+        UserCaseInfoEntity userCaseInfoEntity = userCaseInfoService.query().eq("case_id", caseId).eq("case_type", 1).one();
+        if (userCaseInfoEntity != null) {
+             favorite = userCaseInfoEntity.getFavorite();
+        }
+        return R.ok().put("favorite", favorite);
     }
 
 

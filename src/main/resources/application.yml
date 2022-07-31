@@ -12,9 +12,9 @@ spring:
   # 环境 dev|test|prod
   profiles:
     active: dev
-  # jackson时间格式化
+  # jackson时间格式化 注意东京时区
   jackson:
-    time-zone: GMT+8
+    time-zone: GMT+9
     date-format: yyyy-MM-dd HH:mm:ss
   servlet:
     multipart:

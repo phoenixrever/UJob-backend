@@ -2,14 +2,13 @@ package io.renren;
 
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.Pictures;
-import io.renren.modules.front.entity.AreaEntity;
+import io.renren.modules.front.entity.CityEntity;
 import io.renren.modules.front.entity.CertificateEntity;
 import io.renren.modules.front.entity.OsEntity;
 import io.renren.modules.front.entity.ResumeEntity;
-import io.renren.modules.front.service.AreaService;
+import io.renren.modules.front.service.CityService;
 import io.renren.modules.front.service.OsService;
 import io.renren.modules.front.service.ResumeService;
-import org.junit.After;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,14 +20,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
 public class WordTest {
     @Autowired
-    private AreaService areaService;
+    private CityService cityService;
     @Autowired
     private OsService osService;
     @Autowired
@@ -99,9 +97,9 @@ public class WordTest {
     @Transactional
     public void testTransaction() {
         //name 改成unqiue
-        AreaEntity areaEntity = new AreaEntity();
-        areaEntity.setName("東京都");
-        areaService.save(areaEntity);
+        CityEntity cityEntity = new CityEntity();
+        cityEntity.setName("東京都");
+        cityService.save(cityEntity);
 
         OsEntity osEntity = new OsEntity();
         osEntity.setName("Windows");

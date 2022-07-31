@@ -1,6 +1,6 @@
 package io.renren.modules.front.dao;
 
-import io.renren.modules.front.entity.CaseEntity;
+import io.renren.modules.front.entity.JobEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,6 +14,6 @@ import java.util.List;
  * @date 2022-07-16 23:27:38
  */
 @Mapper
-public interface CaseDao extends BaseMapper<CaseEntity> {
-	List<CaseEntity> getCaseByIdOrder(List<Long> ids);
+public interface JobDao extends BaseMapper<JobEntity> {
+	List<JobEntity> getCaseByIdOrder(List<Long> ids);
 }

@@ -1,15 +1,12 @@
 package io.renren.modules.front.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import io.renren.modules.front.entity.UserCaseInfoEntity;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class UserCaseInfoVo {
+public class UserJobInfoVo {
   /**
    * id
    */
@@ -66,35 +63,38 @@ public class UserCaseInfoVo {
 
 
   /**
-   * 案件名称
+   * 职位名称
    */
-  private String name;
-  /**
-   * 业务分野
-   */
-  private String menu;
-
-  /**
-   * 福利标签 "," 分割
-   */
-  private String feature;
-
-  /**
-   * 工作经验
-   */
-  private String experience;
-  /**
-   * 工作地点
-   */
-  private String area;
-  /**
-   * 日语能力
-   */
-  private String japanese;
+  private String jobName;
   /**
    * 中国语对应 0 否 1 是
    */
-  private String chinese;
+  private Integer chinese;
+
+  /**
+   * 职位类型
+   */
+  private Integer jobType;
+
+  /**
+   * 雇佣类型
+   */
+  private String workType;
+
+  /**
+   * 是否在宅 0 否 1 是
+   */
+  private String workHome;
+
+  /**
+   * 勤务城市
+   */
+  private Integer city;
+  /**
+   * 勤务地区
+   */
+  private Integer area;
+
   /**
    * 详细地址
    */
@@ -104,29 +104,61 @@ public class UserCaseInfoVo {
    */
   private String phone;
   /**
+   * 电车线路
+   */
+  private Integer line;
+  /**
    * 最近车站
    */
-  private String station;
+  private Integer station;
+
+  /**
+   * 交通时间
+   */
+  private String distance;
+  /**
+   * 日语能力
+   */
+  private Integer japanese;
+  /**
+   * 公司训练 0 有料 1 无料
+   */
+  private Integer companyTrain;
+  /**
+   * 工作经验 0 无 1 有
+   */
+  private Integer experience;
+
+  /**
+   * 支付方式 0 月给 1 时给 2 日给
+   */
+  private Integer paidType;
+
   /**
    * 薪水
    */
   private String salary;
+
   /**
-   * 交通方式
+   * 雇佣人数
    */
-  private String distance;
+  private Integer hiredNumber;
+
   /**
-   * 案例详情 待定 会改
+   * 福利标签 "," 分割
    */
-  private String detail;
+  private String feature;
+
   /**
-   *
+   * 工作时间
    */
-  private String startDate;
+  private String workTime;
+
   /**
-   *
+   * 工作内容
    */
-  private String endDate;
+  private String workDetail;
 
   private Long businessUserId;
+  private String companyName;
 }

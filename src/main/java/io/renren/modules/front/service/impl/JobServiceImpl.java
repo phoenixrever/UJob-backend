@@ -7,11 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.exception.RRException;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
-import io.renren.modules.front.dao.CaseDao;
+import io.renren.modules.front.dao.JobDao;
 import io.renren.modules.front.entity.*;
 import io.renren.modules.front.service.*;
-import io.renren.modules.front.vo.CaseDetailVo;
-import io.renren.modules.front.vo.UserCaseInfoVo;
+import io.renren.modules.front.vo.JobDetailVo;
+import io.renren.modules.front.vo.UserJobInfoVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 
 @Service("caseService")
-public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements CaseService {
+public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements JobService {
     @Autowired
     private FeatureService featureService;
 
@@ -36,9 +36,9 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
     private ExperienceService experienceService;
 
     @Autowired
-    private AreaService areaService;
+    private CityService cityService;
     @Autowired
-    private MenuService menuService;
+    private JobTypeService jobTypeService;
 
     @Autowired
     private UserCaseInfoService userCaseInfoService;
@@ -46,36 +46,37 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
     private final static int CASE_TYPE = 0;
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<CaseEntity> page = this.page(
-                new Query<CaseEntity>().getPage(params),
-                new QueryWrapper<CaseEntity>()
+        IPage<JobEntity> page = this.page(
+                new Query<JobEntity>().getPage(params),
+                new QueryWrapper<JobEntity>()
         );
 
         return new PageUtils(page);
     }
 
+    //todo  检查一下 插个职位数据好像太多sql语句了 还有前面的select选项表查的全是page 也要改了
     @Override
     public PageUtils queryDetailPage(Map<String, Object> params) {
 
-        QueryWrapper<CaseEntity> wrapper = new QueryWrapper<>();
+        QueryWrapper<JobEntity> wrapper = new QueryWrapper<>();
 
-        int menuId = 1;
-        int area = 1;
+        int jobType = 1;
+        int city = 1;
         int japanese = 1;
 
 
-        if(params.get("menu")!=null){
-            menuId = Integer.parseInt((String) params.get("menu"));
+        if(params.get("jobType")!=null){
+            jobType = Integer.parseInt((String) params.get("jobType"));
             //1 是不限 所有都查询 注意里面不包含本身选项就是 无限 的 1
-            if(menuId!=1){
-                wrapper.eq("menu",menuId);
+            if(jobType!=1){
+                wrapper.eq("job_type",jobType);
             }
 
         }
-        if(params.get("area")!=null){
-            area = Integer.parseInt((String) params.get("area"));
-            if(area!=1){
-                wrapper.eq("area",area);
+        if(params.get("city")!=null){
+            city = Integer.parseInt((String) params.get("city"));
+            if(city!=1){
+                wrapper.eq("city",city);
             }
         }
         if(params.get("japanese")!=null){
@@ -87,38 +88,40 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
 
 
         //处理分页参数和其他参数
-        IPage<CaseEntity> page = this.page(
-                new Query<CaseEntity>().getPage(params),
-                wrapper.orderByDesc("created_time")
+        IPage<JobEntity> page = this.page(
+                new Query<JobEntity>().getPage(params),
+                //todo 测试数据时间爬取时间都设置成一样了 暂时先按id倒序排序 以后记得改
+                //wrapper.orderByDesc("created_time")
+                wrapper.orderByDesc("id")
         );
-        List<CaseEntity> records = page.getRecords();
-        List<CaseDetailVo> caseDetailVos = new ArrayList<>();
+        List<JobEntity> records = page.getRecords();
+        List<JobDetailVo> jobDetailVos = new ArrayList<>();
 
-        for (CaseEntity record : records) {
-            CaseDetailVo caseDetailVo = changeIdToName(record);
-            caseDetailVos.add(caseDetailVo);
+        for (JobEntity record : records) {
+            JobDetailVo jobDetailVo = changeIdToName(record);
+            jobDetailVos.add(jobDetailVo);
         }
 
         //UserPage<T> extends Page<T>  自定义setRecords 方法
-        Page<CaseDetailVo> caseDetailVoPage = new Page<>();
+        Page<JobDetailVo> caseDetailVoPage = new Page<>();
         //老的分页属性全部复制过来 (records T 泛型不同不能复制 )
         BeanUtils.copyProperties(page, caseDetailVoPage);
 
-        caseDetailVoPage.setRecords(caseDetailVos);
+        caseDetailVoPage.setRecords(jobDetailVos);
         return new PageUtils(caseDetailVoPage);
     }
 
     @Override
-    public CaseDetailVo getDetailById(Long id) {
-        CaseEntity caseEntity = this.getById(id);
-        CaseDetailVo caseDetailVo = changeIdToName(caseEntity);
-        return caseDetailVo;
+    public JobDetailVo getDetailById(Long id) {
+        JobEntity jobEntity = this.getById(id);
+        JobDetailVo jobDetailVo = changeIdToName(jobEntity);
+        return jobDetailVo;
     }
 
     //这边要把所有都查出来 我的投递也要用到
     //为了用 in 不在for循环里面查多做了一点
     @Override
-    public PageUtils queryHistoryPage(Map<String, Object> params) {
+    public PageUtils    queryHistoryPage(Map<String, Object> params) {
         Object principal = SecurityUtils.getSubject().getPrincipal();
         if (principal == null) {
            throw new RRException("请登录");
@@ -147,44 +150,43 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
             }
         }
 
-        IPage<CaseEntity> page = this.page(
-                new Query<CaseEntity>().getPage(params),
-                new QueryWrapper<CaseEntity>().in("id",list).last(builder.toString())
+        IPage<JobEntity> page = this.page(
+                new Query<JobEntity>().getPage(params),
+                new QueryWrapper<JobEntity>().in("id",list).last(builder.toString())
         );
 
-        List<CaseEntity> records = page.getRecords();
-        List<UserCaseInfoVo> userCaseInfoVos = new ArrayList<>();
+        List<JobEntity> records = page.getRecords();
+        List<UserJobInfoVo> userJobInfoVos = new ArrayList<>();
 
         for (int i = 0; i < records.size() ; i++) {
-            CaseDetailVo caseDetailVo = changeIdToName(records.get(i));
-            UserCaseInfoVo userCaseInfoVo = new UserCaseInfoVo();
+            JobDetailVo jobDetailVo = changeIdToName(records.get(i));
+            UserJobInfoVo userJobInfoVo = new UserJobInfoVo();
             //2边id顺序是一样的
-            BeanUtils.copyProperties(caseDetailVo, userCaseInfoVo);
-            BeanUtils.copyProperties(userCaseInfoEntities.get(i), userCaseInfoVo);
-            userCaseInfoVos.add(userCaseInfoVo);
+            BeanUtils.copyProperties(jobDetailVo, userJobInfoVo);
+            BeanUtils.copyProperties(userCaseInfoEntities.get(i), userJobInfoVo);
+            userJobInfoVos.add(userJobInfoVo);
         }
 
         //UserPage<T> extends Page<T>  自定义setRecords 方法
-        Page<UserCaseInfoVo> caseDetailVoPage = new Page<>();
+        Page<UserJobInfoVo> caseDetailVoPage = new Page<>();
         //老的分页属性全部复制过来 (records T 泛型不同不能复制 )
         BeanUtils.copyProperties(page, caseDetailVoPage);
 
-        caseDetailVoPage.setRecords(userCaseInfoVos);
+        caseDetailVoPage.setRecords(userJobInfoVos);
         return new PageUtils(caseDetailVoPage);
     }
 
-    private CaseDetailVo changeIdToName(CaseEntity caseEntity) {
+    private JobDetailVo changeIdToName(JobEntity jobEntity) {
         List<JapaneseEntity> japaneseEntities = japaneseService.list();
-        List<ExperienceEntity> experienceEntities = experienceService.list();
-        List<AreaEntity> areaEntities = areaService.list();
-        List<MenuEntity> menuEntities = menuService.list();
+        List<CityEntity> cityEntities = cityService.list();
+        List<JobTypeEntity> jobTypeEntities = jobTypeService.list();
         List<FeatureEntity> featureEntities = featureService.list();
 
-        CaseDetailVo caseDetailVo = new CaseDetailVo();
-        BeanUtils.copyProperties(caseEntity, caseDetailVo);
+        JobDetailVo jobDetailVo = new JobDetailVo();
+        BeanUtils.copyProperties(jobEntity, jobDetailVo);
         ArrayList<String> temp = new ArrayList<>();
 
-        String feature = caseEntity.getFeature();
+        String feature = jobEntity.getFeature();
         String[] split = feature.split(",");
         List<String> ids = Arrays.asList(split);
         featureEntities.forEach(featureEntity -> {
@@ -192,39 +194,33 @@ public class CaseServiceImpl extends ServiceImpl<CaseDao, CaseEntity> implements
                 temp.add(featureEntity.getName());
             }
         });
-        caseDetailVo.setFeature(String.join(",", temp));
+        jobDetailVo.setFeature(String.join(",", temp));
         temp.clear();
 
 
-        Integer menu = caseEntity.getMenu();
-        menuEntities.forEach(menuEntity -> {
-            if (menuEntity.getId().equals(menu)) {
-                caseDetailVo.setMenu(menuEntity.getName());
+        Integer jobType = jobEntity.getJobType();
+        jobTypeEntities.forEach(jobTypeEntity -> {
+            if (jobTypeEntity.getId().equals(jobType)) {
+                jobDetailVo.setJobType(jobTypeEntity.getName());
             }
         });
 
-        Integer area = caseEntity.getArea();
-        areaEntities.forEach(areaEntity -> {
-            if (area.equals(areaEntity.getId())) {
-                caseDetailVo.setArea(areaEntity.getName());
+        Integer city = jobEntity.getCity();
+        cityEntities.forEach(cityEntity -> {
+            if (city.equals(cityEntity.getId())) {
+                jobDetailVo.setCity(cityEntity.getName());
             }
         });
 
 
-        Integer japanese = caseEntity.getJapanese();
+        Integer japanese = jobEntity.getJapanese();
         japaneseEntities.forEach(japaneseEntity -> {
             if (japanese.equals(japaneseEntity.getId())) {
-                caseDetailVo.setJapanese(japaneseEntity.getName());
+                jobDetailVo.setJapanese(japaneseEntity.getName());
             }
         });
 
-        Integer experience = caseEntity.getExperience();
-        experienceEntities.forEach(experienceEntity -> {
-            if (experience.equals(experienceEntity.getId())) {
-                caseDetailVo.setExperience(experienceEntity.getName());
-            }
-        });
-        return caseDetailVo;
+        return jobDetailVo;
     }
 
 }

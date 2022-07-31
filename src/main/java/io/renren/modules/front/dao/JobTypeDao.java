@@ -1,6 +1,6 @@
 package io.renren.modules.front.dao;
 
-import io.renren.modules.front.entity.MenuEntity;
+import io.renren.modules.front.entity.JobTypeEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2022-07-08 19:48:10
  */
 @Mapper
-public interface MenuDao extends BaseMapper<MenuEntity> {
+public interface JobTypeDao extends BaseMapper<JobTypeEntity> {
 	
 }

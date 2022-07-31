@@ -8,19 +8,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 
-import io.renren.modules.front.dao.AreaDao;
-import io.renren.modules.front.entity.AreaEntity;
-import io.renren.modules.front.service.AreaService;
+import io.renren.modules.front.dao.JobTypeDao;
+import io.renren.modules.front.entity.JobTypeEntity;
+import io.renren.modules.front.service.JobTypeService;
 
 
-@Service("areaService")
-public class AreaServiceImpl extends ServiceImpl<AreaDao, AreaEntity> implements AreaService {
+@Service("menuService")
+public class JobTypeServiceImpl extends ServiceImpl<JobTypeDao, JobTypeEntity> implements JobTypeService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<AreaEntity> page = this.page(
-                new Query<AreaEntity>().getPage(params),
-                new QueryWrapper<AreaEntity>()
+        IPage<JobTypeEntity> page = this.page(
+                new Query<JobTypeEntity>().getPage(params),
+                new QueryWrapper<JobTypeEntity>()
         );
 
         return new PageUtils(page);

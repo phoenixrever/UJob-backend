@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.renren.common.exception.RRException;
 import io.renren.modules.front.entity.*;
 import io.renren.modules.front.service.*;
-import io.renren.modules.front.vo.CaseDetailVo;
 import io.renren.modules.front.vo.ItCaseDetailVo;
-import io.renren.modules.front.vo.UserCaseInfoVo;
 import io.renren.modules.front.vo.UserItCaseInfoVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -41,7 +39,7 @@ public class ItCaseServiceImpl extends ServiceImpl<ItCaseDao, ItCaseEntity> impl
     @Autowired
     private DbService dbService;
     @Autowired
-    private AreaService areaService;
+    private CityService cityService;
     @Autowired
     private UserCaseInfoService userCaseInfoService;
 
@@ -186,7 +184,7 @@ public class ItCaseServiceImpl extends ServiceImpl<ItCaseDao, ItCaseEntity> impl
         List<JapaneseEntity> japaneseEntities = japaneseService.list();
         List<ExperienceEntity> experienceEntities = experienceService.list();
         List<DbEntity> dbEntities = dbService.list();
-        List<AreaEntity> areaEntities = areaService.list();
+        List<CityEntity> areaEntities = cityService.list();
 
 
         ItCaseDetailVo jobDetailVo = new ItCaseDetailVo();
