@@ -11,7 +11,7 @@ server:
 spring:
   # 环境 dev|test|prod
   profiles:
-    active: dev
+    active: test
   # jackson时间格式化 注意东京时区
   jackson:
     time-zone: GMT+9

@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-@SpringBootTest
+//@SpringBootTest
 public class WordTest {
     @Autowired
     private CityService cityService;
@@ -32,7 +32,7 @@ public class WordTest {
     @Autowired
     private ResumeService resumeService;
 
-    @Test
+    //@Test
     public void test() throws IOException {
         //get resource path
         File file = ResourceUtils.getFile("classpath:templates/resume.docx");
