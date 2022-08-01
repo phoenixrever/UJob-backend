@@ -3,13 +3,10 @@ package io.renren.modules.front.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.renren.modules.front.vo.SelectionsVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.renren.modules.front.entity.CityEntity;
 import io.renren.modules.front.service.CityService;
@@ -41,6 +38,16 @@ public class CityController {
 
         return R.ok().put("page", page);
     }
+
+    /**
+     * 获取所有selections 数据 citys japanese jobTypes
+     */
+    @GetMapping("/selections")
+    public R getSelections(){
+        SelectionsVo selectionsVo = cityService.getCacheSelections();
+        return R.ok().put("selections", selectionsVo);
+    }
+
 
 
     /**

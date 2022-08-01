@@ -5,16 +5,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.exception.RRException;
+import io.renren.common.utils.Constant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.modules.front.dao.JobDao;
 import io.renren.modules.front.entity.*;
 import io.renren.modules.front.service.*;
 import io.renren.modules.front.vo.JobDetailVo;
+import io.renren.modules.front.vo.SelectionsVo;
 import io.renren.modules.front.vo.UserJobInfoVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@Service("caseService")
+@Service("jobService")
 public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements JobService {
     @Autowired
     private FeatureService featureService;
@@ -44,6 +47,7 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     private UserCaseInfoService userCaseInfoService;
 
     private final static int CASE_TYPE = 0;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<JobEntity> page = this.page(
@@ -54,7 +58,7 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
         return new PageUtils(page);
     }
 
-    //todo  检查一下 插个职位数据好像太多sql语句了 还有前面的select选项表查的全是page 也要改了
+    //todo  检查一下 插个职位数据好像太多sql语句了
     @Override
     public PageUtils queryDetailPage(Map<String, Object> params) {
 
@@ -65,24 +69,24 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
         int japanese = 1;
 
 
-        if(params.get("jobType")!=null){
+        if (params.get("jobType") != null) {
             jobType = Integer.parseInt((String) params.get("jobType"));
             //1 是不限 所有都查询 注意里面不包含本身选项就是 无限 的 1
-            if(jobType!=1){
-                wrapper.eq("job_type",jobType);
+            if (jobType != 1) {
+                wrapper.eq("job_type", jobType);
             }
 
         }
-        if(params.get("city")!=null){
+        if (params.get("city") != null) {
             city = Integer.parseInt((String) params.get("city"));
-            if(city!=1){
-                wrapper.eq("city",city);
+            if (city != 1) {
+                wrapper.eq("city", city);
             }
         }
-        if(params.get("japanese")!=null){
+        if (params.get("japanese") != null) {
             japanese = Integer.parseInt((String) params.get("japanese"));
-            if(japanese!=1){
-                wrapper.eq("japanese",japanese);
+            if (japanese != 1) {
+                wrapper.eq("japanese", japanese);
             }
         }
 
@@ -97,8 +101,9 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
         List<JobEntity> records = page.getRecords();
         List<JobDetailVo> jobDetailVos = new ArrayList<>();
 
+        SelectionsVo selections = cityService.getCacheSelections();
         for (JobEntity record : records) {
-            JobDetailVo jobDetailVo = changeIdToName(record);
+            JobDetailVo jobDetailVo = changeIdToName(record,selections.getJapaneses(),selections.getCities(),selections.getJobTypes(),selections.getFeatureEntities());
             jobDetailVos.add(jobDetailVo);
         }
 
@@ -114,22 +119,23 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     @Override
     public JobDetailVo getDetailById(Long id) {
         JobEntity jobEntity = this.getById(id);
-        JobDetailVo jobDetailVo = changeIdToName(jobEntity);
+        SelectionsVo selections =cityService.getCacheSelections();
+        JobDetailVo jobDetailVo = changeIdToName(jobEntity,selections.getJapaneses(),selections.getCities(),selections.getJobTypes(),selections.getFeatureEntities());
         return jobDetailVo;
     }
 
     //这边要把所有都查出来 我的投递也要用到
     //为了用 in 不在for循环里面查多做了一点
     @Override
-    public PageUtils    queryHistoryPage(Map<String, Object> params) {
+    public PageUtils queryHistoryPage(Map<String, Object> params) {
         Object principal = SecurityUtils.getSubject().getPrincipal();
         if (principal == null) {
-           throw new RRException("请登录");
+            throw new RRException("请登录");
         }
 
         GeneralUserEntity user = (GeneralUserEntity) principal;
         List<UserCaseInfoEntity> userCaseInfoEntities = userCaseInfoService.query().eq("user_id", user.getUserId()).eq("case_type", CASE_TYPE).orderByDesc("updated_time").list();
-        if(userCaseInfoEntities.size()==0){
+        if (userCaseInfoEntities.size() == 0) {
             return new PageUtils(new Page<>());
         }
         List<Long> list = userCaseInfoEntities.stream().map(userCaseInfoEntity -> userCaseInfoEntity.getCaseId()).collect(Collectors.toList());
@@ -138,28 +144,29 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
         StringBuilder builder = new StringBuilder();
         builder.append("order by field(id,");
         int length = list.size();
-        for(int i= 0; i<length; i++){
-            if(i==0){
+        for (int i = 0; i < length; i++) {
+            if (i == 0) {
                 builder.append(list.get(i));
-            }else{
+            } else {
                 builder.append(",")
                         .append(list.get(i));
             }
-            if (i==length-1){
+            if (i == length - 1) {
                 builder.append(")");
             }
         }
 
         IPage<JobEntity> page = this.page(
                 new Query<JobEntity>().getPage(params),
-                new QueryWrapper<JobEntity>().in("id",list).last(builder.toString())
+                new QueryWrapper<JobEntity>().in("id", list).last(builder.toString())
         );
 
         List<JobEntity> records = page.getRecords();
         List<UserJobInfoVo> userJobInfoVos = new ArrayList<>();
 
-        for (int i = 0; i < records.size() ; i++) {
-            JobDetailVo jobDetailVo = changeIdToName(records.get(i));
+        SelectionsVo selections = cityService.getCacheSelections();
+        for (int i = 0; i < records.size(); i++) {
+            JobDetailVo jobDetailVo = changeIdToName(records.get(i),selections.getJapaneses(),selections.getCities(),selections.getJobTypes(),selections.getFeatureEntities());
             UserJobInfoVo userJobInfoVo = new UserJobInfoVo();
             //2边id顺序是一样的
             BeanUtils.copyProperties(jobDetailVo, userJobInfoVo);
@@ -176,11 +183,15 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
         return new PageUtils(caseDetailVoPage);
     }
 
-    private JobDetailVo changeIdToName(JobEntity jobEntity) {
-        List<JapaneseEntity> japaneseEntities = japaneseService.list();
-        List<CityEntity> cityEntities = cityService.list();
-        List<JobTypeEntity> jobTypeEntities = jobTypeService.list();
-        List<FeatureEntity> featureEntities = featureService.list();
+
+    /**
+     * 所有selection都放入参数里面来不然for循环里面调用查N次sql
+     *
+     * @param jobEntity
+     * @return
+     */
+    private JobDetailVo changeIdToName(JobEntity jobEntity, List<JapaneseEntity> japaneseEntities
+            , List<CityEntity> cityEntities, List<JobTypeEntity> jobTypeEntities, List<FeatureEntity> featureEntities) {
 
         JobDetailVo jobDetailVo = new JobDetailVo();
         BeanUtils.copyProperties(jobEntity, jobDetailVo);

@@ -13,7 +13,7 @@ import io.renren.modules.front.entity.JobTypeEntity;
 import io.renren.modules.front.service.JobTypeService;
 
 
-@Service("menuService")
+@Service("jobTypeService")
 public class JobTypeServiceImpl extends ServiceImpl<JobTypeDao, JobTypeEntity> implements JobTypeService {
 
     @Override

@@ -1,17 +1,15 @@
 package io.renren.modules.front.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import io.renren.modules.front.service.UserCaseInfoService;
 import io.renren.modules.front.vo.JobDetailVo;
+import io.renren.modules.front.vo.SelectionsVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.renren.modules.front.entity.JobEntity;
 import io.renren.modules.front.service.JobService;

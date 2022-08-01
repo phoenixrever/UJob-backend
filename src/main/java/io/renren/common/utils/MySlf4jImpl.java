@@ -36,6 +36,7 @@ public class MySlf4jImpl implements Log {
     public void debug(String s) {
         // debug日志输出成info级别日志
         log.info(s);
+        //log.info("debug: {}", s);
     }
 
     @Override

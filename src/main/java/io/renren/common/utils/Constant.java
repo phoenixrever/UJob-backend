@@ -59,6 +59,8 @@ public class Constant {
     //redis key前缀 ： 文件夹分类 方便查看
     public static final String GENERAL_USER_TOKEN_PREFIX="token:general:";
     public static final String BUSINESS_USER_TOKEN_PREFIX="token:business:";
+
+    public static final String CACHE_PREFIX = "CACHE:";
     /**
      * 菜单类型
      *

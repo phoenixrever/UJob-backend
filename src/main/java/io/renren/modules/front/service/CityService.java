@@ -3,6 +3,7 @@ package io.renren.modules.front.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.front.entity.CityEntity;
+import io.renren.modules.front.vo.SelectionsVo;
 
 import java.util.Map;
 
@@ -16,5 +17,6 @@ import java.util.Map;
 public interface CityService extends IService<CityEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    public SelectionsVo getCacheSelections();
 }
 

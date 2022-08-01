@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.front.entity.JobEntity;
 import io.renren.modules.front.vo.JobDetailVo;
+import io.renren.modules.front.vo.SelectionsVo;
 
 
 import java.util.Map;
@@ -24,5 +25,6 @@ public interface JobService extends IService<JobEntity> {
     JobDetailVo getDetailById(Long id);
 
     PageUtils queryHistoryPage(Map<String, Object> params);
+
 }
 

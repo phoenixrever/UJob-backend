@@ -21,8 +21,12 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
       enabled: true
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+      time-to-live: 2592000000 # 30天
   redis:
-    open: false  # 是否开启redis缓存  true开启   false关闭
     database: 0
     host: 192.168.56.10
     port: 6379
@@ -45,6 +49,7 @@ spring:
   messages:
     basename: i18n/messages
     encoding: UTF-8
+
 
 
 #mybatis
