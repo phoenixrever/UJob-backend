@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-@SpringBootTest
+//@SpringBootTest
 public class SeleniumTest {
     @Autowired
     private JobService jobService;
