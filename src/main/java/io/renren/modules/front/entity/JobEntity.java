@@ -22,7 +22,7 @@ public class JobEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@TableId
-	private Integer id;
+	private Long id;
 	/**
 	 * 职位名称
 	 */

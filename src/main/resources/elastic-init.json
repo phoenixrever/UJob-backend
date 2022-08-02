@@ -1,0 +1,81 @@
+{
+  "settings": {
+	"number_of_shards" : 1,
+	"number_of_replicas" : 1,
+    "analysis": {
+      "filter": {
+        "katakana_readingform": {
+          "type": "kuromoji_readingform",
+          "use_romaji": "false"
+        },
+        "romaji_readingform": {
+          "type": "kuromoji_readingform",
+          "use_romaji": "true"
+        }
+      },
+      "analyzer": {
+        "ja_reading_analyzer": {
+          "type": "custom",
+          "filter": [
+            "cjk_width",
+            "lowercase",
+            "kuromoji_stemmer",
+            "ja_stop",
+            "kuromoji_part_of_speech",
+            "kuromoji_baseform",
+            "katakana_readingform"
+          ],
+          "tokenizer": "kuromoji_tokenizer"
+        },
+        "ja_romaji_analyzer": {
+          "type": "custom",
+          "filter": [
+            "cjk_width",
+            "lowercase",
+            "kuromoji_stemmer",
+            "ja_stop",
+            "kuromoji_part_of_speech",
+            "kuromoji_baseform",
+            "romaji_readingform"
+          ],
+          "tokenizer": "kuromoji_tokenizer"
+        }
+      }
+    }
+  }
+}
+{
+  "mappings": {
+    "my_type": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "kuromoji",
+          "fields": {
+            "reading": {
+              "type": "completion",
+              "analyzer": "ja_reading_analyzer",
+              "preserve_separators": false,
+              "preserve_position_increments": false,
+              "max_input_length": 20
+            },
+            "romaji": {
+              "type": "completion",
+              "analyzer": "ja_romaji_analyzer",
+              "preserve_separators": false,
+              "preserve_position_increments": false,
+              "max_input_length": 20
+            },
+            "suggestion": {
+              "type": "completion",
+              "analyzer": "kuromoji",
+              "preserve_separators": false,
+              "preserve_position_increments": false,
+              "max_input_length": 20
+            }
+          }
+        }
+      }
+    }
+  }
+}
