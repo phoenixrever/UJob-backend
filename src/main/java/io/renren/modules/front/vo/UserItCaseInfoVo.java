@@ -47,7 +47,7 @@ public class UserItCaseInfoVo {
   /**
    * 不合适
    */
-  private Integer reject;
+  private Integer unqualified;
 
   /**
    * 创建时间

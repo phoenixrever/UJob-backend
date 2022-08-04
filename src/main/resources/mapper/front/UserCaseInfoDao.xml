@@ -13,7 +13,7 @@
         <result property="checked" column="checked"/>
         <result property="communicate" column="communicate"/>
         <result property="interview" column="interview"/>
-        <result property="reject" column="reject"/>
+        <result property="unqualified" column="unqualified"/>
     </resultMap>
 
 

@@ -48,7 +48,7 @@ public class UserJobInfoVo {
   /**
    * 不合适
    */
-  private Integer reject;
+  private Integer unqualified;
 
   /**
    * 创建时间

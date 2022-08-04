@@ -89,11 +89,11 @@ public class UserCaseInfoEntity implements Serializable {
 	/**
 	 * 不合适
 	 */
-	private Integer reject;
+	private Integer unqualified;
 	/**
 	 * 拒绝时间
 	 */
-	private Date rejectTime;
+	private Date unqualifiedTime;
 
 	/**
 	 * 创建时间

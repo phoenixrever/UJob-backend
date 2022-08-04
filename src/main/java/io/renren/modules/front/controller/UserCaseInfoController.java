@@ -2,11 +2,14 @@ package io.renren.modules.front.controller;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.ShiroUtils;
 import io.renren.modules.front.entity.GeneralUserEntity;
 import io.renren.modules.front.service.JobService;
 import io.renren.modules.front.service.ItCaseService;
+import io.renren.modules.front.vo.DeliveryVo;
 import io.renren.modules.front.vo.JobDetailVo;
 import io.renren.modules.front.vo.ItCaseDetailVo;
 import org.apache.shiro.SecurityUtils;
@@ -147,25 +150,38 @@ public class UserCaseInfoController {
     }
 
     /**
-     * favorite
+     * favorite  case_type 和 case_id 联合确定唯一
      */
     @PostMapping("/setFavorite")
     public R setFavorite(@RequestBody UserCaseInfoEntity userCaseInfo){
         UserCaseInfoEntity userCaseInfoEntity = userCaseInfoService.query().eq("case_id", userCaseInfo.getCaseId()).eq("case_type", userCaseInfo.getCaseType()).one();
         if (userCaseInfoEntity != null) {
+            //不要用前段传来的其他数据 保证安全性能
             userCaseInfoEntity.setFavorite(userCaseInfo.getFavorite());
+            userCaseInfoEntity.setFavoriteTime(new Date());
             userCaseInfoService.updateById(userCaseInfoEntity);
         }
         return R.ok();
     }
 
     /**
+     * setDelivery
+     * 记得校验caseType的时候只允许传0或1
+     */
+    @PostMapping("/setDelivery")
+    public R setDelivery(@RequestBody DeliveryVo deliveryVo){
+        userCaseInfoService.setDeliveryWithIds(deliveryVo);
+        return R.ok();
+    }
+
+
+    /**
      * favorite
      */
-    @GetMapping("/favorite/{caseId}")
-    public R favorite(@PathVariable Long caseId){
+    @GetMapping("/favorite/{caseType}/{caseId}")
+    public R favorite(@PathVariable Integer caseType, @PathVariable Long caseId){
         Integer favorite=0;
-        UserCaseInfoEntity userCaseInfoEntity = userCaseInfoService.query().eq("case_id", caseId).eq("case_type", 1).one();
+        UserCaseInfoEntity userCaseInfoEntity = userCaseInfoService.query().eq("case_id", caseId).eq("case_type", caseType).one();
         if (userCaseInfoEntity != null) {
              favorite = userCaseInfoEntity.getFavorite();
         }
