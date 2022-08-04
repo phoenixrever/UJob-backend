@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SpringBootTest
+//@SpringBootTest
 public class ElasticSearchIndex {
     @Autowired
     private RestHighLevelClient esClient;
@@ -322,7 +322,7 @@ public class ElasticSearchIndex {
             "  }";
 
 
-    @Test
+    //@Test
     void createIndex() throws IOException {
         GetIndexRequest getRequest = new GetIndexRequest("jobs");
         boolean exists = esClient.indices().exists(getRequest, RequestOptions.DEFAULT);
@@ -339,7 +339,7 @@ public class ElasticSearchIndex {
         esClient.indices().create(request, MyElasticSearchConfig.COMMON_OPTIONS);
     }
 
-    @Test
+    //@Test
     void addJobs() throws IOException {
         IndexRequest request = new IndexRequest("jobs");
 

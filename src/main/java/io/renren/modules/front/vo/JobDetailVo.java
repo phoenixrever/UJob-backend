@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class JobDetailVo {
 
-    private Integer id;
+    private Long id;
     /**
      * 职位名称
      */

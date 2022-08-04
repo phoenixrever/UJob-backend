@@ -43,9 +43,6 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     @Autowired
     private JobTypeService jobTypeService;
 
-    @Autowired
-    private UserCaseInfoService userCaseInfoService;
-
     private final static int CASE_TYPE = 0;
 
     @Override
@@ -124,63 +121,66 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
         return jobDetailVo;
     }
 
+    //todo 此方法废弃
     //这边要把所有都查出来 我的投递也要用到
     //为了用 in 不在for循环里面查多做了一点
+    @Deprecated
     @Override
     public PageUtils queryHistoryPage(Map<String, Object> params) {
-        Object principal = SecurityUtils.getSubject().getPrincipal();
-        if (principal == null) {
-            throw new RRException("请登录");
-        }
-
-        GeneralUserEntity user = (GeneralUserEntity) principal;
-        List<UserCaseInfoEntity> userCaseInfoEntities = userCaseInfoService.query().eq("user_id", user.getUserId()).eq("case_type", CASE_TYPE).orderByDesc("updated_time").list();
-        if (userCaseInfoEntities.size() == 0) {
-            return new PageUtils(new Page<>());
-        }
-        List<Long> list = userCaseInfoEntities.stream().map(userCaseInfoEntity -> userCaseInfoEntity.getCaseId()).collect(Collectors.toList());
-
-        //拼接Sql按照id的顺序排序 因为有分页需求 不能所有数据查询出来再排序
-        StringBuilder builder = new StringBuilder();
-        builder.append("order by field(id,");
-        int length = list.size();
-        for (int i = 0; i < length; i++) {
-            if (i == 0) {
-                builder.append(list.get(i));
-            } else {
-                builder.append(",")
-                        .append(list.get(i));
-            }
-            if (i == length - 1) {
-                builder.append(")");
-            }
-        }
-
-        IPage<JobEntity> page = this.page(
-                new Query<JobEntity>().getPage(params),
-                new QueryWrapper<JobEntity>().in("id", list).last(builder.toString())
-        );
-
-        List<JobEntity> records = page.getRecords();
-        List<UserJobInfoVo> userJobInfoVos = new ArrayList<>();
-
-        SelectionsVo selections = cityService.getCacheSelections();
-        for (int i = 0; i < records.size(); i++) {
-            JobDetailVo jobDetailVo = changeIdToName(records.get(i),selections.getJapaneses(),selections.getCities(),selections.getJobTypes(),selections.getFeatureEntities());
-            UserJobInfoVo userJobInfoVo = new UserJobInfoVo();
-            //2边id顺序是一样的
-            BeanUtils.copyProperties(jobDetailVo, userJobInfoVo);
-            BeanUtils.copyProperties(userCaseInfoEntities.get(i), userJobInfoVo);
-            userJobInfoVos.add(userJobInfoVo);
-        }
-
-        //UserPage<T> extends Page<T>  自定义setRecords 方法
-        Page<UserJobInfoVo> caseDetailVoPage = new Page<>();
-        //老的分页属性全部复制过来 (records T 泛型不同不能复制 )
-        BeanUtils.copyProperties(page, caseDetailVoPage);
-
-        caseDetailVoPage.setRecords(userJobInfoVos);
-        return new PageUtils(caseDetailVoPage);
+        //Object principal = SecurityUtils.getSubject().getPrincipal();
+        //if (principal == null) {
+        //    throw new RRException("请登录");
+        //}
+        //
+        //GeneralUserEntity user = (GeneralUserEntity) principal;
+        //List<UserCaseInfoEntity> userCaseInfoEntities = userCaseInfoService.query().eq("user_id", user.getUserId()).eq("case_type", CASE_TYPE).orderByDesc("updated_time").list();
+        //if (userCaseInfoEntities.size() == 0) {
+        //    return new PageUtils(new Page<>());
+        //}
+        //List<Long> list = userCaseInfoEntities.stream().map(userCaseInfoEntity -> userCaseInfoEntity.getCaseId()).collect(Collectors.toList());
+        //
+        ////拼接Sql按照id的顺序排序 因为有分页需求 不能所有数据查询出来再排序
+        //StringBuilder builder = new StringBuilder();
+        //builder.append("order by field(id,");
+        //int length = list.size();
+        //for (int i = 0; i < length; i++) {
+        //    if (i == 0) {
+        //        builder.append(list.get(i));
+        //    } else {
+        //        builder.append(",")
+        //                .append(list.get(i));
+        //    }
+        //    if (i == length - 1) {
+        //        builder.append(")");
+        //    }
+        //}
+        //
+        //IPage<JobEntity> page = this.page(
+        //        new Query<JobEntity>().getPage(params),
+        //        new QueryWrapper<JobEntity>().in("id", list).last(builder.toString())
+        //);
+        //
+        //List<JobEntity> records = page.getRecords();
+        //List<UserJobInfoVo> userJobInfoVos = new ArrayList<>();
+        //
+        //SelectionsVo selections = cityService.getCacheSelections();
+        //for (int i = 0; i < records.size(); i++) {
+        //    JobDetailVo jobDetailVo = changeIdToName(records.get(i),selections.getJapaneses(),selections.getCities(),selections.getJobTypes(),selections.getFeatureEntities());
+        //    UserJobInfoVo userJobInfoVo = new UserJobInfoVo();
+        //    //2边id顺序是一样的
+        //    BeanUtils.copyProperties(jobDetailVo, userJobInfoVo);
+        //    BeanUtils.copyProperties(userCaseInfoEntities.get(i), userJobInfoVo);
+        //    userJobInfoVos.add(userJobInfoVo);
+        //}
+        //
+        ////UserPage<T> extends Page<T>  自定义setRecords 方法
+        //Page<UserJobInfoVo> caseDetailVoPage = new Page<>();
+        ////老的分页属性全部复制过来 (records T 泛型不同不能复制 )
+        //BeanUtils.copyProperties(page, caseDetailVoPage);
+        //
+        //caseDetailVoPage.setRecords(userJobInfoVos);
+        //return new PageUtils(caseDetailVoPage);
+        return null;
     }
 
 
@@ -190,7 +190,7 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
      * @param jobEntity
      * @return
      */
-    private JobDetailVo changeIdToName(JobEntity jobEntity, List<JapaneseEntity> japaneseEntities
+    public JobDetailVo changeIdToName(JobEntity jobEntity, List<JapaneseEntity> japaneseEntities
             , List<CityEntity> cityEntities, List<JobTypeEntity> jobTypeEntities, List<FeatureEntity> featureEntities) {
 
         JobDetailVo jobDetailVo = new JobDetailVo();

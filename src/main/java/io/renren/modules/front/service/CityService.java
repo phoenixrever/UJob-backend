@@ -17,6 +17,6 @@ import java.util.Map;
 public interface CityService extends IService<CityEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
-    public SelectionsVo getCacheSelections();
+     SelectionsVo getCacheSelections();
 }
 

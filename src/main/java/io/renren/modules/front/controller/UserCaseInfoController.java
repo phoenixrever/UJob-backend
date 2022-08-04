@@ -1,6 +1,7 @@
 package io.renren.modules.front.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 import io.renren.modules.front.entity.GeneralUserEntity;
@@ -48,7 +49,7 @@ public class UserCaseInfoController {
     @RequestMapping("/caseInfo/{id}")
     //@RequiresPermissions("front:case:info")
     public R infoLogin(@PathVariable("id") Long id){
-        int CASE_TYPE=0;
+        int CASE_TYPE=0; //职位
         JobDetailVo jobDetailVo = jobService.getDetailById(id);
         //如果已经登录 记录到历史记录里面 每次查询都会记录一次
         //todo 如果未登录用 需不需要保存记录 登陆后合并 待决定
@@ -64,10 +65,12 @@ public class UserCaseInfoController {
                 userCaseInfoEntity.setUserId(userId);
                 userCaseInfoEntity.setCaseType(CASE_TYPE);
                 userCaseInfoEntity.setVisited(1);
+                userCaseInfoEntity.setVisitedTime(new Date());
                 userCaseInfoEntity.setBusinessUserId(jobDetailVo.getBusinessUserId());
                 userCaseInfoService.save(userCaseInfoEntity);
             }else {
                 caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
+                caseInfoEntity.setVisitedTime(new Date());
                 userCaseInfoService.updateById(caseInfoEntity);
             }
         }
@@ -102,6 +105,7 @@ public class UserCaseInfoController {
                 userCaseInfoService.save(userCaseInfoEntity);
             }else {
                 caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
+                caseInfoEntity.setVisitedTime(new Date());
                 userCaseInfoService.updateById(caseInfoEntity);
             }
         }
@@ -121,22 +125,24 @@ public class UserCaseInfoController {
     /**
      * 用户浏览历史
      */
-    @RequestMapping("/case/history")
+    @RequestMapping("/case/{search}")
     //@RequiresPermissions("front:usercaseinfo:list")
-    public R listHistory(@RequestParam Map<String, Object> params){
-        int caseType = 0;
-        PageUtils page =null;
-        if( params.get("caseType")  != null){
-            caseType = Integer.parseInt((String) params.get("caseType"));
-        }
-        switch (caseType){
-            case 0:
-                page = jobService.queryHistoryPage(params);
-                break;
-            case 1:
-                page = itCaseService.queryHistoryPage(params);
-                break;
-        }
+    public R listHistory(@RequestParam Map<String, Object> params,@PathVariable("search") String search){
+        //int caseType = 0;
+        //PageUtils page =null;
+        //if( params.get("caseType")  != null){
+        //    caseType = Integer.parseInt((String) params.get("caseType"));
+        //}
+        //switch (caseType){
+        //    case 0:
+        //        page = jobService.queryHistoryPage(params);
+        //        break;
+        //    case 1:
+        //        page = itCaseService.queryHistoryPage(params);
+        //        break;
+        //}
+
+        PageUtils page = userCaseInfoService.querySearchPage(params,search);
         return R.ok().put("page", page);
     }
 

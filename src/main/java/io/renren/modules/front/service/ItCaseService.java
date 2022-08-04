@@ -2,9 +2,10 @@ package io.renren.modules.front.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
-import io.renren.modules.front.entity.ItCaseEntity;
+import io.renren.modules.front.entity.*;
 import io.renren.modules.front.vo.ItCaseDetailVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +23,9 @@ public interface ItCaseService extends IService<ItCaseEntity> {
 
     ItCaseDetailVo getDetailById(Long id);
 
+    @Deprecated
     PageUtils queryHistoryPage(Map<String, Object> params);
+
+    ItCaseDetailVo changeIdToName(ItCaseEntity itCaseEntity, List<LanguageEntity> languages, List<OsEntity> osEntities, List<JapaneseEntity> japaneses, List<ExperienceEntity> experiences, List<DbEntity> dbEntities, List<CityEntity> cities);
 }
 

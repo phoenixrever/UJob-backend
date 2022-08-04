@@ -25,7 +25,7 @@ public class ItCaseEntity implements Serializable {
 	 * 
 	 */
 	@TableId
-	private Integer id;
+	private Long id;
 	/**
 	 * 案件名称
 	 */
@@ -48,17 +48,18 @@ public class ItCaseEntity implements Serializable {
 	 */
 	private Integer experience;
 	/**
-	 * 工作地点
-	 */
-	private Integer area;
-	/**
 	 * 日语能力
 	 */
 	private Integer japanese;
 	/**
-	 * 中国语对应 0 否 1 是
+	 * 勤务城市
 	 */
-	private Integer chinese;
+	private Integer city;
+	/**
+	 * 勤务地区
+	 */
+	private Integer area;
+
 	/**
 	 * 详细地址
 	 */
@@ -68,17 +69,27 @@ public class ItCaseEntity implements Serializable {
 	 */
 	private String phone;
 	/**
+	 * 电车线路
+	 */
+	private Integer line;
+	/**
 	 * 最近车站
 	 */
-	private String station;
+	private Integer station;
+
+	/**
+	 * 交通时间
+	 */
+	private String distance;
+	/**
+	 * 中国语对应 0 否 1 是
+	 */
+	private Integer chinese;
 	/**
 	 * 薪水
 	 */
 	private String salary;
-	/**
-	 * 交通方式
-	 */
-	private String distance;
+
 	/**
 	 * 案例详情 待定 会改
 	 */
@@ -108,5 +119,6 @@ public class ItCaseEntity implements Serializable {
 	private Date updatedTime;
 
 	private Long businessUserId;
+	private String companyName;
 
 }

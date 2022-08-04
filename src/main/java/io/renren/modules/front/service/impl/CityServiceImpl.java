@@ -1,9 +1,7 @@
 package io.renren.modules.front.service.impl;
 
 import io.renren.common.utils.Constant;
-import io.renren.modules.front.entity.FeatureEntity;
-import io.renren.modules.front.entity.JapaneseEntity;
-import io.renren.modules.front.entity.JobTypeEntity;
+import io.renren.modules.front.entity.*;
 import io.renren.modules.front.service.*;
 import io.renren.modules.front.vo.SelectionsVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 
 import io.renren.modules.front.dao.AreaDao;
-import io.renren.modules.front.entity.CityEntity;
 
 
 @Service("cityService")
@@ -31,6 +28,15 @@ public class CityServiceImpl extends ServiceImpl<AreaDao, CityEntity> implements
     private JapaneseService japaneseService;
     @Autowired
     private JobTypeService jobTypeService;
+    @Autowired
+    private ExperienceService experienceService;
+    @Autowired
+    private LanguageService languageService;
+    @Autowired
+    private DbService dbService;
+    @Autowired
+    private OsService osService;
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -50,12 +56,22 @@ public class CityServiceImpl extends ServiceImpl<AreaDao, CityEntity> implements
         List<JapaneseEntity> japaneseEntities = japaneseService.list();
         List<JobTypeEntity> jobTypeEntities = jobTypeService.list();
         List<FeatureEntity> featureEntities = featureService.list();
+        //it case
+        List<LanguageEntity> languageEntities = languageService.list();
+        List<OsEntity> osEntities = osService.list();
+        List<ExperienceEntity> experienceEntities = experienceService.list();
+        List<DbEntity> dbEntities = dbService.list();
 
         SelectionsVo selectionsVo = new SelectionsVo();
         selectionsVo.setJobTypes(jobTypeEntities);
         selectionsVo.setCities(cityEntities);
         selectionsVo.setJapaneses(japaneseEntities);
         selectionsVo.setFeatureEntities(featureEntities);
+        selectionsVo.setLanguages(languageEntities);
+        selectionsVo.setOsEntities(osEntities);
+        selectionsVo.setExperiences(experienceEntities);
+        selectionsVo.setDbEntities(dbEntities);
+
         return selectionsVo;
     }
 

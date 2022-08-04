@@ -16,5 +16,7 @@ import java.util.Map;
 public interface UserCaseInfoService extends IService<UserCaseInfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils querySearchPage(Map<String, Object> params, String search);
 }
 
