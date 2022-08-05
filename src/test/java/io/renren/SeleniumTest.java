@@ -56,7 +56,7 @@ public class SeleniumTest {
     }
 
 
-    @Test
+    //@Test
     public void test() {
 
         for (int n = 1; n <= 4; n++) {

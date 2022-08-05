@@ -11,7 +11,7 @@ server:
 spring:
   # 环境 dev|test|prod
   profiles:
-    active: dev
+    active: test
   # jackson时间格式化 注意东京时区
   jackson:
     time-zone: GMT+9
@@ -80,6 +80,9 @@ swagger:
 renren:
   redis:
     open: true
+  elasticsearch:
+    open: false
+    host: 192.168.56.10
   shiro:
     redis: false
   # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】

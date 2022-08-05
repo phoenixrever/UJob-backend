@@ -99,4 +99,10 @@ public class ItCaseDetailVo {
     private Long businessUserId;
     private String companyName;
 
+    private Integer delivered;
+    private Date deliveredTime;
+
+    private Integer favorite;
+    private Integer caseType=1;
+
 }

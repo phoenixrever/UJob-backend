@@ -23,7 +23,6 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
 
-
 /**
  * 用户案件信息表必须要登录
  *
@@ -32,95 +31,46 @@ import io.renren.common.utils.R;
  * @date 2022-07-25 20:44:20
  */
 @RestController
-    @RequestMapping("front/usercaseinfo")
+@RequestMapping("front/usercaseinfo")
 public class UserCaseInfoController {
     @Autowired
     private UserCaseInfoService userCaseInfoService;
-    @Autowired
-    private JobService jobService;
-    @Autowired
-    private ItCaseService itCaseService;
+
 
 
     /**
      * 查询案件信息
      * todo 问题来了 不登录是没用user的 所以不能记录历史记录
      * 暂时的解决方法 我写2个接口 前端看登录情况请求不同的接口
-     *
+     * <p>
      * 这边不用事务 历史记录没记录到也没大关系
      */
     @RequestMapping("/caseInfo/{id}")
     //@RequiresPermissions("front:case:info")
-    public R infoLogin(@PathVariable("id") Long id){
-        int CASE_TYPE=0; //职位
-        JobDetailVo jobDetailVo = jobService.getDetailById(id);
-        //如果已经登录 记录到历史记录里面 每次查询都会记录一次
-        //todo 如果未登录用 需不需要保存记录 登陆后合并 待决定
-        Object principal = SecurityUtils.getSubject().getPrincipal();
-        if(principal != null){
-            //先查看对应关系是否存在
-            UserCaseInfoEntity caseInfoEntity = userCaseInfoService.query().eq("case_id", id).eq("case_type", CASE_TYPE).one();
-            if (caseInfoEntity == null) {
-                GeneralUserEntity generalUser = (GeneralUserEntity) principal;
-                Long userId = generalUser.getUserId();
-                UserCaseInfoEntity userCaseInfoEntity = new UserCaseInfoEntity();
-                userCaseInfoEntity.setCaseId(id);
-                userCaseInfoEntity.setUserId(userId);
-                userCaseInfoEntity.setCaseType(CASE_TYPE);
-                userCaseInfoEntity.setVisited(1);
-                userCaseInfoEntity.setVisitedTime(new Date());
-                userCaseInfoEntity.setBusinessUserId(jobDetailVo.getBusinessUserId());
-                userCaseInfoService.save(userCaseInfoEntity);
-            }else {
-                caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
-                caseInfoEntity.setVisitedTime(new Date());
-                userCaseInfoService.updateById(caseInfoEntity);
-            }
-        }
-
+    public R infoLogin(@PathVariable("id") Long id) {
+        JobDetailVo jobDetailVo = userCaseInfoService.getJobDetailVo(id);
         return R.ok().put("case", jobDetailVo);
     }
 
+
     /**
      * 查询iT案件信息
-     *
      */
     @RequestMapping("/itCaseInfo/{id}")
     //@RequiresPermissions("front:case:info")
-    public R itInfoLogin(@PathVariable("id") Long id){
-        int CASE_TYPE=1;
-
-        ItCaseDetailVo itCaseDetailVo = itCaseService.getDetailById(id);
-
-        Object principal = SecurityUtils.getSubject().getPrincipal();
-        if(principal != null){
-            //先查看对应关系是否存在
-            UserCaseInfoEntity caseInfoEntity = userCaseInfoService.query().eq("case_id", id).eq("case_type", CASE_TYPE).one();
-            if (caseInfoEntity == null) {
-                GeneralUserEntity generalUser = (GeneralUserEntity) principal;
-                Long userId = generalUser.getUserId();
-                UserCaseInfoEntity userCaseInfoEntity = new UserCaseInfoEntity();
-                userCaseInfoEntity.setCaseId(id);
-                userCaseInfoEntity.setUserId(userId);
-                userCaseInfoEntity.setCaseType(CASE_TYPE);
-                userCaseInfoEntity.setVisited(1);
-                userCaseInfoEntity.setBusinessUserId(itCaseDetailVo.getBusinessUserId());
-                userCaseInfoService.save(userCaseInfoEntity);
-            }else {
-                caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
-                caseInfoEntity.setVisitedTime(new Date());
-                userCaseInfoService.updateById(caseInfoEntity);
-            }
-        }
+    public R itInfoLogin(@PathVariable("id") Long id) {
+        ItCaseDetailVo itCaseDetailVo = userCaseInfoService.getItCaseDetailVo(id);
 
         return R.ok().put("itCase", itCaseDetailVo);
     }
+
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("front:usercaseinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = userCaseInfoService.queryPage(params);
         return R.ok().put("page", page);
     }
@@ -130,7 +80,7 @@ public class UserCaseInfoController {
      */
     @RequestMapping("/case/{search}")
     //@RequiresPermissions("front:usercaseinfo:list")
-    public R listHistory(@RequestParam Map<String, Object> params,@PathVariable("search") String search){
+    public R listHistory(@RequestParam Map<String, Object> params, @PathVariable("search") String search) {
         //int caseType = 0;
         //PageUtils page =null;
         //if( params.get("caseType")  != null){
@@ -145,7 +95,7 @@ public class UserCaseInfoController {
         //        break;
         //}
 
-        PageUtils page = userCaseInfoService.querySearchPage(params,search);
+        PageUtils page = userCaseInfoService.querySearchPage(params, search);
         return R.ok().put("page", page);
     }
 
@@ -153,7 +103,7 @@ public class UserCaseInfoController {
      * favorite  case_type 和 case_id 联合确定唯一
      */
     @PostMapping("/setFavorite")
-    public R setFavorite(@RequestBody UserCaseInfoEntity userCaseInfo){
+    public R setFavorite(@RequestBody UserCaseInfoEntity userCaseInfo) {
         UserCaseInfoEntity userCaseInfoEntity = userCaseInfoService.query().eq("case_id", userCaseInfo.getCaseId()).eq("case_type", userCaseInfo.getCaseType()).one();
         if (userCaseInfoEntity != null) {
             //不要用前段传来的其他数据 保证安全性能
@@ -169,7 +119,7 @@ public class UserCaseInfoController {
      * 记得校验caseType的时候只允许传0或1
      */
     @PostMapping("/setDelivery")
-    public R setDelivery(@RequestBody DeliveryVo deliveryVo){
+    public R setDelivery(@RequestBody DeliveryVo deliveryVo) {
         userCaseInfoService.setDeliveryWithIds(deliveryVo);
         return R.ok();
     }
@@ -179,11 +129,11 @@ public class UserCaseInfoController {
      * favorite
      */
     @GetMapping("/favorite/{caseType}/{caseId}")
-    public R favorite(@PathVariable Integer caseType, @PathVariable Long caseId){
-        Integer favorite=0;
+    public R favorite(@PathVariable Integer caseType, @PathVariable Long caseId) {
+        Integer favorite = 0;
         UserCaseInfoEntity userCaseInfoEntity = userCaseInfoService.query().eq("case_id", caseId).eq("case_type", caseType).one();
         if (userCaseInfoEntity != null) {
-             favorite = userCaseInfoEntity.getFavorite();
+            favorite = userCaseInfoEntity.getFavorite();
         }
         return R.ok().put("favorite", favorite);
     }
@@ -194,8 +144,8 @@ public class UserCaseInfoController {
      */
     @RequestMapping("/info/{id}")
     @RequiresPermissions("front:usercaseinfo:info")
-    public R info(@PathVariable("id") Long id){
-		UserCaseInfoEntity userCaseInfo = userCaseInfoService.getById(id);
+    public R info(@PathVariable("id") Long id) {
+        UserCaseInfoEntity userCaseInfo = userCaseInfoService.getById(id);
 
         return R.ok().put("userCaseInfo", userCaseInfo);
     }
@@ -205,8 +155,8 @@ public class UserCaseInfoController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("front:usercaseinfo:save")
-    public R save(@RequestBody UserCaseInfoEntity userCaseInfo){
-		userCaseInfoService.save(userCaseInfo);
+    public R save(@RequestBody UserCaseInfoEntity userCaseInfo) {
+        userCaseInfoService.save(userCaseInfo);
 
         return R.ok();
     }
@@ -216,8 +166,8 @@ public class UserCaseInfoController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("front:usercaseinfo:update")
-    public R update(@RequestBody UserCaseInfoEntity userCaseInfo){
-		userCaseInfoService.updateById(userCaseInfo);
+    public R update(@RequestBody UserCaseInfoEntity userCaseInfo) {
+        userCaseInfoService.updateById(userCaseInfo);
 
         return R.ok();
     }
@@ -227,8 +177,8 @@ public class UserCaseInfoController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("front:usercaseinfo:delete")
-    public R delete(@RequestBody Long[] ids){
-		userCaseInfoService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Long[] ids) {
+        userCaseInfoService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

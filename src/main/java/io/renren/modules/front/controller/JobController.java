@@ -59,6 +59,8 @@ public class JobController {
     /**
      * 信息
      * 未登录用这个接口查询案件详情
+     *
+     * 登录接口放到/front/usercaseinfo/info/{id}
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("front:case:info")

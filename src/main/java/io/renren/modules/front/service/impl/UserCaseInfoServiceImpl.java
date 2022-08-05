@@ -172,9 +172,7 @@ public class UserCaseInfoServiceImpl extends ServiceImpl<UserCaseInfoDao, UserCa
         Integer caseType = deliveryVo.getCaseType();
 
         List<Long> caseIds = deliveryVo.getCaseIds();
-        if (caseType == 0) {
-          return;
-        }
+
         List<UserCaseInfoEntity> toUpdate = new ArrayList<>();
         List<UserCaseInfoEntity> toSave = new ArrayList<>();
         Date date = new Date();
@@ -205,5 +203,71 @@ public class UserCaseInfoServiceImpl extends ServiceImpl<UserCaseInfoDao, UserCa
         if(toSave.size() > 0) {
             this.saveBatch(toSave);
         }
+    }
+
+    //caseType 方法不合并成一个也没关系
+    @Override
+    public ItCaseDetailVo getItCaseDetailVo(Long id) {
+        int CASE_TYPE = 1;
+
+        ItCaseDetailVo itCaseDetailVo = itCaseService.getDetailById(id);
+
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if (principal != null) {
+            //先查看对应关系是否存在
+            UserCaseInfoEntity caseInfoEntity = this.query().eq("case_id", id).eq("case_type", CASE_TYPE).one();
+            if (caseInfoEntity == null) {
+                GeneralUserEntity generalUser = (GeneralUserEntity) principal;
+                Long userId = generalUser.getUserId();
+                UserCaseInfoEntity userCaseInfoEntity = new UserCaseInfoEntity();
+                userCaseInfoEntity.setCaseId(id);
+                userCaseInfoEntity.setUserId(userId);
+                userCaseInfoEntity.setCaseType(CASE_TYPE);
+                userCaseInfoEntity.setVisited(1);
+                userCaseInfoEntity.setBusinessUserId(itCaseDetailVo.getBusinessUserId());
+                this.save(userCaseInfoEntity);
+            } else {
+                caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
+                caseInfoEntity.setVisitedTime(new Date());
+                this.updateById(caseInfoEntity);
+                itCaseDetailVo.setDelivered(caseInfoEntity.getDelivery());
+                itCaseDetailVo.setDeliveredTime(caseInfoEntity.getDeliveryTime());
+                itCaseDetailVo.setFavorite(caseInfoEntity.getFavorite());
+            }
+        }
+        return itCaseDetailVo;
+    }
+
+    @Override
+    public JobDetailVo getJobDetailVo(Long id) {
+        int CASE_TYPE = 0; //职位
+        JobDetailVo jobDetailVo = jobService.getDetailById(id);
+        //如果已经登录 记录到历史记录里面 每次查询都会记录一次
+        //todo 如果未登录用 需不需要保存记录 登陆后合并 待决定
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if (principal != null) {
+            //先查看对应关系是否存在
+            UserCaseInfoEntity caseInfoEntity = this.query().eq("case_id", id).eq("case_type", CASE_TYPE).one();
+            if (caseInfoEntity == null) {
+                GeneralUserEntity generalUser = (GeneralUserEntity) principal;
+                Long userId = generalUser.getUserId();
+                UserCaseInfoEntity userCaseInfoEntity = new UserCaseInfoEntity();
+                userCaseInfoEntity.setCaseId(id);
+                userCaseInfoEntity.setUserId(userId);
+                userCaseInfoEntity.setCaseType(CASE_TYPE);
+                userCaseInfoEntity.setVisited(1);
+                userCaseInfoEntity.setVisitedTime(new Date());
+                userCaseInfoEntity.setBusinessUserId(jobDetailVo.getBusinessUserId());
+                this.save(userCaseInfoEntity);
+            } else {
+                caseInfoEntity.setVisited(caseInfoEntity.getVisited() + 1);
+                caseInfoEntity.setVisitedTime(new Date());
+                this.updateById(caseInfoEntity);
+                jobDetailVo.setDelivered(caseInfoEntity.getDelivery());
+                jobDetailVo.setDeliveredTime(caseInfoEntity.getDeliveryTime());
+                jobDetailVo.setFavorite(caseInfoEntity.getFavorite());
+            }
+        }
+        return jobDetailVo;
     }
 }

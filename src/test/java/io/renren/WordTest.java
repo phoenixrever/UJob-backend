@@ -93,7 +93,7 @@ public class WordTest {
 
     //测试mybatis 事务异常回滚
     //save 出错会自动抛出错误 不需要捕获
-    @Test
+    //@Test
     @Transactional
     public void testTransaction() {
         //name 改成unqiue

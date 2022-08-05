@@ -11,7 +11,7 @@
  Target Server Version : 50738
  File Encoding         : 65001
 
- Date: 01/08/2022 21:25:47
+ Date: 05/08/2022 21:15:40
 */
 
 SET NAMES utf8mb4;
@@ -170,7 +170,7 @@ CREATE TABLE `QRTZ_SCHEDULER_STATE`  (
 -- ----------------------------
 -- Records of QRTZ_SCHEDULER_STATE
 -- ----------------------------
-INSERT INTO `QRTZ_SCHEDULER_STATE` VALUES ('RenrenScheduler', 'phoenix1659348508660', 1659356742369, 15000);
+INSERT INTO `QRTZ_SCHEDULER_STATE` VALUES ('RenrenScheduler', 'phoenix1659701119256', 1659701735980, 15000);
 
 -- ----------------------------
 -- Table structure for QRTZ_SIMPLE_TRIGGERS
@@ -258,7 +258,7 @@ CREATE TABLE `QRTZ_TRIGGERS`  (
 -- ----------------------------
 -- Records of QRTZ_TRIGGERS
 -- ----------------------------
-INSERT INTO `QRTZ_TRIGGERS` VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', NULL, 1659357000000, 1659355200000, 5, 'WAITING', 'CRON', 1656500279000, 0, NULL, 2, 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372002E696F2E72656E72656E2E6D6F64756C65732E6A6F622E656E746974792E5363686564756C654A6F62456E7469747900000000000000010200074C00086265616E4E616D657400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000E63726F6E45787072657373696F6E71007E00094C00056A6F6249647400104C6A6176612F6C616E672F4C6F6E673B4C0006706172616D7371007E00094C000672656D61726B71007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B7870740008746573745461736B7372000E6A6176612E7574696C2E44617465686A81014B5974190300007870770800000181AD2958A87874000E3020302F3330202A202A202A203F7372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000000174000672656E72656E74000CE58F82E695B0E6B58BE8AF95737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E0013000000007800);
+INSERT INTO `QRTZ_TRIGGERS` VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', NULL, 1659702600000, -1, 5, 'WAITING', 'CRON', 1656500279000, 0, NULL, 2, 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372002E696F2E72656E72656E2E6D6F64756C65732E6A6F622E656E746974792E5363686564756C654A6F62456E7469747900000000000000010200074C00086265616E4E616D657400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000E63726F6E45787072657373696F6E71007E00094C00056A6F6249647400104C6A6176612F6C616E672F4C6F6E673B4C0006706172616D7371007E00094C000672656D61726B71007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B7870740008746573745461736B7372000E6A6176612E7574696C2E44617465686A81014B5974190300007870770800000181AD2958A87874000E3020302F3330202A202A202A203F7372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000000174000672656E72656E74000CE58F82E695B0E6B58BE8AF95737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E0013000000007800);
 
 -- ----------------------------
 -- Table structure for ft_area
@@ -458,21 +458,22 @@ INSERT INTO `ft_general_user` VALUES (1, 'admin', '9ec9750e709431dad22365cabc5c6
 -- ----------------------------
 DROP TABLE IF EXISTS `ft_it_case`;
 CREATE TABLE `ft_it_case`  (
-                               `id` int(11) NOT NULL AUTO_INCREMENT,
+                               `id` bigint(20) NOT NULL AUTO_INCREMENT,
                                `name` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '案件名称',
-                               `menu` tinyint(4) NOT NULL DEFAULT 1 COMMENT '所属分类',
                                `language` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '开发语言 \",\" 分割',
                                `db` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '使用数据库 \",\"分割',
                                `os` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '使用操作系统',
-                               `experience` tinyint(4) NOT NULL COMMENT '工作经验',
-                               `area` int(11) NOT NULL DEFAULT 1 COMMENT '工作地点',
+                               `experience` tinyint(4) NULL DEFAULT 1 COMMENT '工作经验',
                                `japanese` tinyint(4) NULL DEFAULT NULL COMMENT '日语能力',
                                `chinese` tinyint(4) NULL DEFAULT 1 COMMENT '中国语对应 0 否 1 是',
+                               `city` tinyint(4) NULL DEFAULT 1 COMMENT '勤务城市',
+                               `area` int(11) NOT NULL DEFAULT 1 COMMENT '勤务地区',
                                `address` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '详细地址',
                                `phone` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '电话号码',
-                               `station` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '最近车站',
-                               `salary` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '薪水',
+                               `line` int(11) NULL DEFAULT 1 COMMENT '电车线路',
+                               `station` int(11) NULL DEFAULT 1 COMMENT '最近车站',
                                `distance` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '交通方式',
+                               `salary` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '薪水',
                                `detail` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '案例详情 待定 会改',
                                `pg` tinyint(4) NULL DEFAULT 0 COMMENT 'PG人数',
                                `se` tinyint(4) NULL DEFAULT 0 COMMENT 'SE人数',
@@ -483,21 +484,22 @@ CREATE TABLE `ft_it_case`  (
                                `created_time` datetime NULL DEFAULT NULL,
                                `updated_time` datetime NULL DEFAULT NULL,
                                `business_user_id` bigint(20) NOT NULL COMMENT '那个公司发布的',
+                               `company_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '发布公司名称',
                                PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '案件列表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ft_it_case
 -- ----------------------------
-INSERT INTO `ft_it_case` VALUES (1, '11', 4, '2,3,1', '1,2', '1', 3, 1, 1, 2, '11111111', '111111111111', '111111111111111111', '1111111111', '111111111111111111', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 1, 0, '', '', NULL, NULL, 1);
-INSERT INTO `ft_it_case` VALUES (2, '1', 1, '1', '2', '2', 4, 1, 2, 1, '1', '1111111111111', '111111111', '111', '11111111111', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 0, 2, '', '', NULL, NULL, 1);
-INSERT INTO `ft_it_case` VALUES (3, 'qqq', 1, '1', '1', '1', 1, 1, 1, 1, 'q', 'qqqqqqqqq', 'qqqqqqqqqqqqqqqqq', 'qq', 'qqqqqqqq', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 2, 0, '', '', NULL, NULL, 1);
-INSERT INTO `ft_it_case` VALUES (4, 'ジャパン', 4, '1', '1', '1', 2, 2, 1, 1, 'アsだ', '士大夫但是', 'あssteam', '100', '１ウェqw', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 2, 0, '即日', '长期', NULL, NULL, 1);
-INSERT INTO `ft_it_case` VALUES (5, '石牌岭', 4, '1', '1,2', '1,2', 3, 4, 2, 1, '阿斯顿阿斯顿阿三', '阿斯顿', '阿三打算的', '1000W', '阿斯顿啊', '1阿萨大厦的', 1, 0, 2, 0, '2022-05', '2022-12', '2022-07-09 22:36:23', NULL, 1);
-INSERT INTO `ft_it_case` VALUES (6, '中心', 4, '2', '1', '2', 2, 2, 3, 2, '阿斯顿a\'sas', 'd阿斯顿', ' 阿斯顿', '撒的', '阿三d', ' 是的是的', 1, 0, 2, 0, '2022-05', '2022-12', '2022-07-09 22:40:46', NULL, 1);
-INSERT INTO `ft_it_case` VALUES (7, 'C/C＋＋开发', 4, '2', '1', '1', 7, 3, 2, 1, '東京都 千代田区 神田和泉1-6-16', '111111111111', '秋葉原 徒歩 3 分钟', '25万-70万', '秋葉原 徒歩 3 分钟', '【案件名】包装機、ラベルプリンター特注開発\n\n【作業スキール】\nC++開発(画面:QT)\nデータベース（複数表連結SQL）\nSVN（画像処理知識が有ればよい）', 9, 5, 5, 5, '即日', '长期', '2022-07-10 12:29:01', '2022-07-10 12:29:01', 1);
-INSERT INTO `ft_it_case` VALUES (8, 'sss ', 4, '1', '1', '1', 1, 1, 2, 1, '2222', '22', '222', '1000ｗ', '222', 'sdas asd', 0, 0, 0, 0, '即日', '长期', '2022-07-11 21:50:21', '2022-07-11 21:50:21', 1);
-INSERT INTO `ft_it_case` VALUES (9, '証券系', 4, '1,2', '2,1', '2,1', 3, 3, 2, 1, '111111111111', '11111111111111', '1', '1000', '1', '【概　要】証券系\n【スキル】IT開発経験3〜5年以上（キーワード：java、spring batch、spring boot、mybatis、graphql）\n【日本語】日本語によるコミュニケーションが問題なくできる方', 0, 0, 0, 0, '即日', '长期', '2022-07-11 21:51:45', '2022-07-11 21:51:45', 1);
+INSERT INTO `ft_it_case` VALUES (1, '11', '2,3,1', '1,2', '1', 3, 1, 2, 2, 1, '11111111', '111111111111', 1, NULL, '111111111111111111', '1111111111', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 1, 0, '', '', NULL, NULL, 1, '1');
+INSERT INTO `ft_it_case` VALUES (2, '1', '1', '2', '2', 4, 2, 1, 1, 1, '1', '1111111111111', 1, NULL, '11111111111', '111', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 0, 2, '', '', NULL, NULL, 1, '1');
+INSERT INTO `ft_it_case` VALUES (3, 'qqq', '1', '1', '1', 1, 1, 1, 1, 1, 'q', 'qqqqqqqqq', 1, NULL, 'qqqqqqqq', 'qq', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 2, 0, '', '', NULL, NULL, 1, '1');
+INSERT INTO `ft_it_case` VALUES (4, 'ジャパン', '1', '1', '1', 2, 1, 1, 1, 2, 'アsだ', '士大夫但是', 1, NULL, '１ウェqw', '100', 'java設計～テスト\n\n1)Java開発（基本設計・製造・テスト）\n\n2)SQL（SQL文がかける　※実態のDBはDB2となります）\n\n3)詳細設計～開発・テスト経験', 1, 0, 2, 0, '即日', '长期', NULL, NULL, 1, '1');
+INSERT INTO `ft_it_case` VALUES (5, '石牌岭', '1', '1,2', '1,2', 3, 2, 1, 1, 4, '阿斯顿阿斯顿阿三', '阿斯顿', 1, NULL, '阿斯顿啊', '1000W', '1阿萨大厦的', 1, 0, 2, 0, '2022-05', '2022-12', '2022-07-09 22:36:23', NULL, 1, '1');
+INSERT INTO `ft_it_case` VALUES (6, '中心', '2', '1', '2', 2, 3, 2, 1, 2, '阿斯顿a\'sas', 'd阿斯顿', 1, NULL, '阿三d', '撒的', ' 是的是的', 1, 0, 2, 0, '2022-05', '2022-12', '2022-07-09 22:40:46', NULL, 1, '1');
+INSERT INTO `ft_it_case` VALUES (7, 'C/C＋＋开发', '2', '1', '1', 7, 2, 1, 1, 3, '東京都 千代田区 神田和泉1-6-16', '111111111111', 1, NULL, '秋葉原 徒歩 3 分钟', '25万-70万', '【案件名】包装機、ラベルプリンター特注開発\n\n【作業スキール】\nC++開発(画面:QT)\nデータベース（複数表連結SQL）\nSVN（画像処理知識が有ればよい）', 9, 5, 5, 5, '即日', '长期', '2022-07-10 12:29:01', '2022-07-10 12:29:01', 1, '1');
+INSERT INTO `ft_it_case` VALUES (8, 'sss ', '1', '1', '1', 1, 2, 1, 1, 1, '2222', '22', 1, NULL, '222', '1000ｗ', 'sdas asd', 0, 0, 0, 0, '即日', '长期', '2022-07-11 21:50:21', '2022-07-11 21:50:21', 1, '1');
+INSERT INTO `ft_it_case` VALUES (9, '証券系', '1,2', '2,1', '2,1', 3, 2, 1, 1, 3, '111111111111', '11111111111111', 1, NULL, '1', '1000', '【概　要】証券系\n【スキル】IT開発経験3〜5年以上（キーワード：java、spring batch、spring boot、mybatis、graphql）\n【日本語】日本語によるコミュニケーションが問題なくできる方', 0, 0, 0, 0, '即日', '长期', '2022-07-11 21:51:45', '2022-07-11 21:51:45', 1, '1');
 
 -- ----------------------------
 -- Table structure for ft_japanese
@@ -2605,34 +2607,84 @@ CREATE TABLE `ft_user_case_info`  (
                                       `case_id` bigint(20) NOT NULL COMMENT '案件id',
                                       `case_type` tinyint(4) NULL DEFAULT 0 COMMENT '0 正社员 1 IT案件',
                                       `favorite` tinyint(4) NULL DEFAULT 0 COMMENT '1 收藏',
+                                      `favorite_time` datetime NULL DEFAULT NULL,
                                       `delivery` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否投递过简历',
+                                      `delivery_time` datetime NULL DEFAULT NULL,
                                       `visited` int(11) NOT NULL DEFAULT 0 COMMENT '可能在在列表投递，没有点进去看,点进去看了为1，多次点击++',
+                                      `visited_time` datetime NULL DEFAULT NULL,
                                       `checked` tinyint(4) NOT NULL DEFAULT 0 COMMENT '投递简历是否被公司查看过',
+                                      `checked_time` datetime NULL DEFAULT NULL,
                                       `communicate` tinyint(4) NOT NULL DEFAULT 0 COMMENT '待沟通',
+                                      `communicate_time` datetime NULL DEFAULT NULL,
                                       `interview` tinyint(4) NOT NULL DEFAULT 0 COMMENT '邀请面试',
-                                      `reject` tinyint(4) NOT NULL DEFAULT 0 COMMENT '不合适',
+                                      `interview_time` datetime NULL DEFAULT NULL,
+                                      `unqualified` tinyint(4) NOT NULL DEFAULT 0 COMMENT '不合适',
+                                      `unqualified_time` datetime NULL DEFAULT NULL,
                                       `created_time` datetime NULL DEFAULT NULL,
                                       `updated_time` datetime NULL DEFAULT NULL,
                                       `business_user_id` bigint(20) NULL DEFAULT NULL,
                                       PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户案件信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户案件信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ft_user_case_info
 -- ----------------------------
-INSERT INTO `ft_user_case_info` VALUES (2, 1, 10, 0, 0, 0, 5, 1, 0, 0, 0, '2022-07-26 19:57:16', '2022-07-30 22:29:59', 1);
-INSERT INTO `ft_user_case_info` VALUES (4, 1, 9, 1, 0, 0, 94, 0, 0, 0, 0, '2022-07-27 18:51:36', '2022-08-01 21:06:04', 1);
-INSERT INTO `ft_user_case_info` VALUES (6, 1, 8, 1, 0, 0, 1, 0, 0, 0, 0, '2022-07-27 19:40:19', '2022-07-27 19:40:19', 1);
-INSERT INTO `ft_user_case_info` VALUES (7, 1, 256, 0, 0, 0, 21, 0, 0, 0, 0, '2022-07-31 17:11:54', '2022-07-31 17:45:05', 1);
-INSERT INTO `ft_user_case_info` VALUES (8, 1, 512, 0, 0, 0, 3, 0, 0, 0, 0, '2022-07-31 17:11:59', '2022-07-31 17:23:52', 1);
-INSERT INTO `ft_user_case_info` VALUES (9, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, '2022-07-31 17:23:54', '2022-07-31 17:23:54', 1);
-INSERT INTO `ft_user_case_info` VALUES (10, 1, 2, 0, 0, 0, 1, 0, 0, 0, 0, '2022-07-31 17:23:58', '2022-07-31 17:23:58', 1);
-INSERT INTO `ft_user_case_info` VALUES (11, 1, 517, 0, 0, 0, 1, 0, 0, 0, 0, '2022-07-31 17:39:10', '2022-07-31 17:39:10', 1);
-INSERT INTO `ft_user_case_info` VALUES (12, 1, 4, 0, 0, 0, 1, 0, 0, 0, 0, '2022-07-31 17:39:24', '2022-07-31 17:39:24', 1);
-INSERT INTO `ft_user_case_info` VALUES (13, 1, 542, 0, 0, 0, 2, 0, 0, 0, 0, '2022-07-31 19:11:38', '2022-07-31 19:14:30', 1);
-INSERT INTO `ft_user_case_info` VALUES (14, 1, 559, 0, 0, 0, 1, 0, 0, 0, 0, '2022-07-31 20:50:57', '2022-07-31 20:50:57', 2);
-INSERT INTO `ft_user_case_info` VALUES (15, 1, 1037, 0, 0, 0, 1, 0, 0, 0, 0, '2022-07-31 21:56:46', '2022-07-31 21:56:46', 2);
-INSERT INTO `ft_user_case_info` VALUES (16, 1, 797, 0, 0, 0, 1, 0, 0, 0, 0, '2022-08-01 21:06:11', '2022-08-01 21:06:11', 2);
+INSERT INTO `ft_user_case_info` VALUES (2, 1, 10, 0, 0, NULL, 0, NULL, 7, '2022-08-04 23:10:38', 1, '2022-08-04 22:46:00', 0, NULL, 0, NULL, 0, NULL, '2022-07-26 19:57:16', '2022-08-04 23:10:38', 1);
+INSERT INTO `ft_user_case_info` VALUES (4, 1, 9, 1, 1, '2022-08-04 11:18:54', 0, NULL, 121, '2022-08-05 17:44:26', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-27 18:51:36', '2022-08-05 17:44:26', 1);
+INSERT INTO `ft_user_case_info` VALUES (6, 1, 8, 1, 0, NULL, 1, '2022-08-05 20:37:51', 10, '2022-08-05 20:50:53', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-27 19:40:19', '2022-08-05 20:50:53', 1);
+INSERT INTO `ft_user_case_info` VALUES (7, 1, 256, 0, 0, NULL, 0, NULL, 21, '2022-08-03 01:22:20', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 17:11:54', '2022-07-31 17:45:05', 1);
+INSERT INTO `ft_user_case_info` VALUES (8, 1, 512, 0, 0, NULL, 0, NULL, 5, '2022-08-03 22:41:43', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 17:11:59', '2022-08-03 22:41:43', 1);
+INSERT INTO `ft_user_case_info` VALUES (9, 1, 1, 0, 0, NULL, 0, NULL, 1, '2022-08-03 01:22:20', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 17:23:54', '2022-07-31 17:23:54', 1);
+INSERT INTO `ft_user_case_info` VALUES (10, 1, 2, 0, 0, NULL, 0, NULL, 1, '2022-08-03 01:22:20', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 17:23:58', '2022-07-31 17:23:58', 1);
+INSERT INTO `ft_user_case_info` VALUES (11, 1, 517, 0, 0, NULL, 0, NULL, 1, '2022-08-03 01:22:20', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 17:39:10', '2022-07-31 17:39:10', 1);
+INSERT INTO `ft_user_case_info` VALUES (12, 1, 4, 0, 0, NULL, 0, NULL, 1, '2022-08-03 01:22:20', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 17:39:24', '2022-07-31 17:39:24', 1);
+INSERT INTO `ft_user_case_info` VALUES (13, 1, 542, 0, 0, NULL, 0, NULL, 2, '2022-08-03 01:22:20', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 19:11:38', '2022-07-31 19:14:30', 1);
+INSERT INTO `ft_user_case_info` VALUES (14, 1, 559, 0, 1, '2022-08-05 20:49:58', 1, '2022-08-05 20:22:42', 46, '2022-08-05 20:49:56', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 20:50:57', '2022-08-05 20:49:58', 2);
+INSERT INTO `ft_user_case_info` VALUES (15, 1, 1037, 0, 0, NULL, 0, NULL, 2, '2022-08-04 17:35:33', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-07-31 21:56:46', '2022-08-04 17:35:33', 2);
+INSERT INTO `ft_user_case_info` VALUES (16, 1, 797, 0, 0, NULL, 0, NULL, 3, '2022-08-04 22:50:23', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-01 21:06:11', '2022-08-04 22:50:23', 2);
+INSERT INTO `ft_user_case_info` VALUES (17, 1, 1908, 0, 0, NULL, 0, NULL, 1, '2022-08-03 20:21:23', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-03 20:21:23', '2022-08-03 20:21:23', 2);
+INSERT INTO `ft_user_case_info` VALUES (18, 1, 556, 0, 0, NULL, 0, NULL, 2, '2022-08-04 23:04:48', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-03 22:33:04', '2022-08-04 23:04:48', 2);
+INSERT INTO `ft_user_case_info` VALUES (19, 1, 1154, 0, 0, NULL, 0, NULL, 2, '2022-08-04 11:30:15', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-03 22:43:36', '2022-08-04 11:30:15', 2);
+INSERT INTO `ft_user_case_info` VALUES (20, 1, 7, 1, 0, NULL, 0, NULL, 4, '2022-08-04 23:04:30', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 11:20:56', '2022-08-04 23:04:30', 1);
+INSERT INTO `ft_user_case_info` VALUES (21, 1, 4, 1, 0, NULL, 0, NULL, 2, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 11:21:06', '2022-08-04 11:21:09', 1);
+INSERT INTO `ft_user_case_info` VALUES (22, 1, 557, 0, 0, NULL, 0, NULL, 3, '2022-08-04 11:29:42', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 11:21:14', '2022-08-04 11:29:42', 2);
+INSERT INTO `ft_user_case_info` VALUES (23, 1, 6, 1, 0, NULL, 0, NULL, 2, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 11:21:31', '2022-08-04 11:21:36', 1);
+INSERT INTO `ft_user_case_info` VALUES (24, 1, 1034, 0, 0, NULL, 0, NULL, 7, '2022-08-05 17:44:38', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 17:35:56', '2022-08-05 17:44:38', 2);
+INSERT INTO `ft_user_case_info` VALUES (25, 1, 558, 0, 0, '2022-08-05 21:12:21', 1, '2022-08-05 20:25:07', 41, '2022-08-05 21:12:24', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 18:03:36', '2022-08-05 21:12:24', 2);
+INSERT INTO `ft_user_case_info` VALUES (27, 1, 796, 0, 0, NULL, 1, '2022-08-04 21:49:41', 1, '2022-08-04 22:47:11', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 22:47:11', NULL);
+INSERT INTO `ft_user_case_info` VALUES (28, 1, 795, 0, 0, NULL, 1, '2022-08-04 21:49:41', 1, '2022-08-04 22:50:38', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 22:50:38', NULL);
+INSERT INTO `ft_user_case_info` VALUES (29, 1, 794, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (30, 1, 793, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (31, 1, 792, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (32, 1, 791, 0, 0, NULL, 1, '2022-08-04 21:49:41', 1, '2022-08-04 22:50:30', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 22:50:30', NULL);
+INSERT INTO `ft_user_case_info` VALUES (33, 1, 790, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (34, 1, 789, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (35, 1, 788, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (36, 1, 787, 0, 0, NULL, 1, '2022-08-04 21:49:41', 4, '2022-08-05 20:50:51', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-05 20:50:51', NULL);
+INSERT INTO `ft_user_case_info` VALUES (37, 1, 786, 0, 0, NULL, 1, '2022-08-04 21:49:41', 1, '2022-08-04 22:47:14', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 22:47:14', NULL);
+INSERT INTO `ft_user_case_info` VALUES (38, 1, 785, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (39, 1, 784, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (40, 1, 783, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (41, 1, 782, 0, 0, NULL, 1, '2022-08-04 21:49:41', 1, '2022-08-04 22:47:06', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 22:47:06', NULL);
+INSERT INTO `ft_user_case_info` VALUES (42, 1, 781, 0, 0, NULL, 1, '2022-08-04 21:49:41', 1, '2022-08-04 23:10:53', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 23:10:53', NULL);
+INSERT INTO `ft_user_case_info` VALUES (43, 1, 780, 0, 0, NULL, 1, '2022-08-04 21:49:41', 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 21:49:41', NULL);
+INSERT INTO `ft_user_case_info` VALUES (44, 1, 779, 0, 0, NULL, 1, '2022-08-04 21:49:41', 2, '2022-08-04 22:50:27', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 22:50:27', NULL);
+INSERT INTO `ft_user_case_info` VALUES (45, 1, 778, 0, 0, NULL, 1, '2022-08-04 21:49:41', 2, '2022-08-04 23:10:49', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 21:49:41', '2022-08-04 23:10:49', NULL);
+INSERT INTO `ft_user_case_info` VALUES (46, 1, 555, 0, 0, NULL, 0, NULL, 2, '2022-08-04 23:04:44', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 23:04:40', '2022-08-04 23:04:44', 2);
+INSERT INTO `ft_user_case_info` VALUES (47, 1, 1112, 0, 0, NULL, 1, '2022-08-05 17:54:16', 2, '2022-08-05 17:54:14', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 23:10:59', '2022-08-05 17:54:16', 2);
+INSERT INTO `ft_user_case_info` VALUES (48, 1, 1111, 0, 0, NULL, 0, NULL, 1, '2022-08-04 23:11:02', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 23:11:02', '2022-08-04 23:11:02', 2);
+INSERT INTO `ft_user_case_info` VALUES (49, 1, 1106, 0, 0, NULL, 0, NULL, 1, '2022-08-04 23:11:06', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 23:11:06', '2022-08-04 23:11:06', 2);
+INSERT INTO `ft_user_case_info` VALUES (50, 1, 1621, 0, 0, NULL, 0, NULL, 1, '2022-08-04 23:11:27', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 23:11:27', '2022-08-04 23:11:27', 2);
+INSERT INTO `ft_user_case_info` VALUES (51, 1, 1639, 0, 0, NULL, 0, NULL, 1, '2022-08-04 23:11:37', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-04 23:11:37', '2022-08-04 23:11:37', 2);
+INSERT INTO `ft_user_case_info` VALUES (52, 1, 534, 0, 0, NULL, 0, NULL, 1, '2022-08-05 17:37:09', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:37:09', '2022-08-05 17:37:09', 2);
+INSERT INTO `ft_user_case_info` VALUES (53, 1, 529, 0, 0, NULL, 0, NULL, 1, '2022-08-05 17:37:22', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:37:22', '2022-08-05 17:37:22', 2);
+INSERT INTO `ft_user_case_info` VALUES (54, 1, 1560, 0, 0, NULL, 0, NULL, 1, '2022-08-05 17:37:44', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:37:44', '2022-08-05 17:37:44', 2);
+INSERT INTO `ft_user_case_info` VALUES (55, 1, 1557, 0, 1, '2022-08-05 17:38:48', 0, NULL, 1, '2022-08-05 17:37:57', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:37:57', '2022-08-05 17:38:48', 2);
+INSERT INTO `ft_user_case_info` VALUES (56, 1, 1424, 0, 0, NULL, 0, NULL, 2, '2022-08-05 17:44:01', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:43:46', '2022-08-05 17:44:01', 2);
+INSERT INTO `ft_user_case_info` VALUES (57, 1, 1426, 0, 0, NULL, 0, NULL, 2, '2022-08-05 17:43:54', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:43:50', '2022-08-05 17:43:54', 2);
+INSERT INTO `ft_user_case_info` VALUES (58, 1, 1425, 0, 0, NULL, 0, NULL, 1, '2022-08-05 17:43:58', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:43:58', '2022-08-05 17:43:58', 2);
+INSERT INTO `ft_user_case_info` VALUES (59, 1, 1421, 0, 0, NULL, 0, NULL, 1, '2022-08-05 17:44:05', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:44:05', '2022-08-05 17:44:05', 2);
+INSERT INTO `ft_user_case_info` VALUES (60, 1, 1565, 0, 0, NULL, 0, NULL, 1, '2022-08-05 17:51:07', 0, NULL, 0, NULL, 0, NULL, 0, NULL, '2022-08-05 17:51:07', '2022-08-05 17:51:07', 2);
 
 -- ----------------------------
 -- Table structure for schedule_job
@@ -2669,7 +2721,7 @@ CREATE TABLE `schedule_job_log`  (
                                      `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
                                      PRIMARY KEY (`log_id`) USING BTREE,
                                      INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 253 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 293 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule_job_log
@@ -2926,6 +2978,46 @@ INSERT INTO `schedule_job_log` VALUES (249, 1, 'testTask', 'renren', 0, NULL, 0,
 INSERT INTO `schedule_job_log` VALUES (250, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-01 20:00:00');
 INSERT INTO `schedule_job_log` VALUES (251, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-01 20:30:00');
 INSERT INTO `schedule_job_log` VALUES (252, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-01 21:00:00');
+INSERT INTO `schedule_job_log` VALUES (253, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-01 21:30:00');
+INSERT INTO `schedule_job_log` VALUES (254, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 10:00:00');
+INSERT INTO `schedule_job_log` VALUES (255, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 10:30:00');
+INSERT INTO `schedule_job_log` VALUES (256, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 11:00:00');
+INSERT INTO `schedule_job_log` VALUES (257, 1, 'testTask', 'renren', 0, NULL, 1, '2022-08-03 18:30:00');
+INSERT INTO `schedule_job_log` VALUES (258, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 19:00:00');
+INSERT INTO `schedule_job_log` VALUES (259, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 19:30:00');
+INSERT INTO `schedule_job_log` VALUES (260, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 20:00:00');
+INSERT INTO `schedule_job_log` VALUES (261, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 20:30:00');
+INSERT INTO `schedule_job_log` VALUES (262, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 21:00:00');
+INSERT INTO `schedule_job_log` VALUES (263, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 21:30:00');
+INSERT INTO `schedule_job_log` VALUES (264, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 22:00:00');
+INSERT INTO `schedule_job_log` VALUES (265, 1, 'testTask', 'renren', 0, NULL, 1, '2022-08-03 23:00:00');
+INSERT INTO `schedule_job_log` VALUES (266, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-03 23:30:00');
+INSERT INTO `schedule_job_log` VALUES (267, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 09:30:00');
+INSERT INTO `schedule_job_log` VALUES (268, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 10:00:00');
+INSERT INTO `schedule_job_log` VALUES (269, 1, 'testTask', 'renren', 0, NULL, 1, '2022-08-04 10:30:00');
+INSERT INTO `schedule_job_log` VALUES (270, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 11:00:00');
+INSERT INTO `schedule_job_log` VALUES (271, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 11:30:00');
+INSERT INTO `schedule_job_log` VALUES (272, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 18:00:00');
+INSERT INTO `schedule_job_log` VALUES (273, 1, 'testTask', 'renren', 0, NULL, 1, '2022-08-04 18:30:00');
+INSERT INTO `schedule_job_log` VALUES (274, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 19:00:00');
+INSERT INTO `schedule_job_log` VALUES (275, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 19:30:00');
+INSERT INTO `schedule_job_log` VALUES (276, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 20:00:00');
+INSERT INTO `schedule_job_log` VALUES (277, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 20:30:00');
+INSERT INTO `schedule_job_log` VALUES (278, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 21:00:00');
+INSERT INTO `schedule_job_log` VALUES (279, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 21:30:00');
+INSERT INTO `schedule_job_log` VALUES (280, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 22:00:00');
+INSERT INTO `schedule_job_log` VALUES (281, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 22:30:00');
+INSERT INTO `schedule_job_log` VALUES (282, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-04 23:00:00');
+INSERT INTO `schedule_job_log` VALUES (283, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 09:30:00');
+INSERT INTO `schedule_job_log` VALUES (284, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 10:00:00');
+INSERT INTO `schedule_job_log` VALUES (285, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 10:30:00');
+INSERT INTO `schedule_job_log` VALUES (286, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 11:00:00');
+INSERT INTO `schedule_job_log` VALUES (287, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 18:00:00');
+INSERT INTO `schedule_job_log` VALUES (288, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 19:00:00');
+INSERT INTO `schedule_job_log` VALUES (289, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 19:30:00');
+INSERT INTO `schedule_job_log` VALUES (290, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 20:00:00');
+INSERT INTO `schedule_job_log` VALUES (291, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 20:30:00');
+INSERT INTO `schedule_job_log` VALUES (292, 1, 'testTask', 'renren', 0, NULL, 0, '2022-08-05 21:00:00');
 
 -- ----------------------------
 -- Table structure for sys_captcha

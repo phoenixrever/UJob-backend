@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.front.entity.UserCaseInfoEntity;
 import io.renren.modules.front.vo.DeliveryVo;
+import io.renren.modules.front.vo.ItCaseDetailVo;
+import io.renren.modules.front.vo.JobDetailVo;
 
 import java.util.Map;
 
@@ -21,5 +23,9 @@ public interface UserCaseInfoService extends IService<UserCaseInfoEntity> {
     PageUtils querySearchPage(Map<String, Object> params, String search);
 
     void setDeliveryWithIds(DeliveryVo deliveryVo);
+
+    ItCaseDetailVo getItCaseDetailVo(Long id);
+
+    JobDetailVo getJobDetailVo(Long id);
 }
 

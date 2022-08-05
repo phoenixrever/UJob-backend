@@ -18,6 +18,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class JobServiceImpl extends ServiceImpl<JobDao, JobEntity> implements Jo
     private JobTypeService jobTypeService;
 
     private final static int CASE_TYPE = 0;
+
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

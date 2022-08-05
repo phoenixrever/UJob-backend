@@ -92,6 +92,8 @@ public class ShiroServiceImpl implements ShiroService {
         return sysUserDao.selectById(userId);
     }
 
+    //todo 更新用户信息的时候记得更新缓存
+    @Cacheable(value = Constant.CACHE_PREFIX+"user", key = "#root.args[0]")
     @Override
     public GeneralUserEntity getGeneralUser(String username) {
         GeneralUserEntity  generalUser = generalUserService.query().eq("username", username).one();
