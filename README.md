@@ -13,4 +13,5 @@
 上传到自己的分支时候请切换到Test 环境 不然上传测试不通过
 
 
+![GitHub Logo](https://github.com/phoenixrever/xFuture/raw/master/assets/images/homePage.png)
 
